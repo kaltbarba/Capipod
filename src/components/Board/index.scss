@@ -1,0 +1,14 @@
+
+
+.board-container {
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  background-color: red;
+
+  .board-cell {
+    width: 100%;
+    border: 1px solid gray;
+    background-color: lightgray;
+    padding: 10px;
+  }
+}
