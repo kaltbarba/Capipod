@@ -3,12 +3,26 @@
 .board-container {
   display: grid;
   grid-template-columns: repeat(30, 1fr);
-  background-color: red;
+
 
   .board-cell {
-    width: 100%;
-    border: 1px solid gray;
-    background-color: lightgray;
-    padding: 10px;
+    height: 40px;
+    border: 1px solid darkgray;
+   
+    &.idle {
+      background-color: lightgray;
+    }
+
+    &.active {
+      background-color: red;
+    }
+
+    &.destroyed {
+      background-color: green;
+    }
+
+    &.building {
+      background-color: #607d8b91;
+    }
   }
 }
