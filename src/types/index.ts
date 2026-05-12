@@ -11,3 +11,10 @@ export interface Item {
 }
 
 export type Direction = "up" | "down" | "left" | "right";
+
+export const Direction: { [k in Direction]: k } = {
+  up: "up",
+  down: "down",
+  right: "right",
+  left: "left",
+};
