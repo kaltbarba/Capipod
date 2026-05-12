@@ -7,14 +7,20 @@ import BuildingsData from "./data/buildings";
 import Player from "./classes/Player";
 import { Direction } from "./types";
 
-import { usePlayersStore, useLogStore } from "./store";
+import {
+  usePlayersStore,
+  useLogStore,
+  useBoardStore,
+  useGameStore,
+} from "./store";
 
 import "./App.css";
 
 function App() {
-  const { players, setPlayers, rollDieForPlayer, movePlayer } =
-    usePlayersStore();
-  const logStore = useLogStore();
+  const { rollDieForPlayer, movePlayer } = usePlayersStore();
+  const { players, setPlayers, setBuildings, setPods, size } = useBoardStore();
+  const { logs } = useLogStore();
+  const { stage, currentPlayerIndex } = useGameStore();
 
   useEffect(() => {
     setPlayers([
@@ -24,31 +30,32 @@ function App() {
         items: [],
         coordinate: { x: 0, y: 0 },
       }),
-      // new Player({
-      //   name: "Andres",
-      //   healthPoints: 5,
-      //   items: [],
-      //   coordinate: { x: 29, y: 29 },
-      // }),
+      new Player({
+        name: "Andres",
+        healthPoints: 5,
+        items: [],
+        coordinate: { x: 29, y: 29 },
+      }),
     ]);
+
+    setBuildings(BuildingsData);
+    setPods(PodsData);
   }, []);
 
   useEffect(() => {
     const handleKeyDown = (e): void => {
-      if (players[0].stepsRemaining <= 0) return;
-
       switch (e.key) {
         case "ArrowUp":
-          movePlayer(players[0], Direction.up);
+          movePlayer(players[currentPlayerIndex], Direction.up);
           break;
         case "ArrowDown":
-          movePlayer(players[0], Direction.down);
+          movePlayer(players[currentPlayerIndex], Direction.down);
           break;
         case "ArrowLeft":
-          movePlayer(players[0], Direction.left);
+          movePlayer(players[currentPlayerIndex], Direction.left);
           break;
         case "ArrowRight":
-          movePlayer(players[0], Direction.right);
+          movePlayer(players[currentPlayerIndex], Direction.right);
           break;
       }
 
@@ -60,20 +67,19 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [players, movePlayer]);
+  }, [players, movePlayer, currentPlayerIndex]);
 
-  console.log(usePlayersStore(), useLogStore());
+  console.log(usePlayersStore(), useLogStore(), useBoardStore());
 
   return (
     <div className="App">
-      <Board
-        pods={PodsData}
-        buildings={BuildingsData}
-        size={30}
-        players={players}
-      />
+      <Board size={size} players={players} />
 
       <div>
+        <div>
+          <h5>Game state</h5>
+          <div>{stage}</div>
+        </div>
         <div className="player-info">
           {players.map((player) => (
             <div
@@ -85,7 +91,8 @@ function App() {
               </p>
               <button
                 className="button"
-                onClick={() => rollDieForPlayer(player)}
+                disabled={player !== players[currentPlayerIndex]}
+                onClick={() => rollDieForPlayer(players[currentPlayerIndex])}
               >
                 Roll die
               </button>
@@ -98,7 +105,7 @@ function App() {
         <div className="log-container">
           <h5>Game Log</h5>
           <div className="log-entries">
-            {logStore.logs.map((log, index) => (
+            {logs.map((log, index) => (
               <div key={index} className="log-entry">
                 <span className="timestamp mr-2">
                   {log.timestamp.toLocaleTimeString()}:

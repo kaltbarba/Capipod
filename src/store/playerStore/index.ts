@@ -1,26 +1,24 @@
 import { create } from "zustand";
-import useLogStore from "../logStore";
 
-import { Direction } from "../../types";
+import logStore from "../logStore";
+import boardStore from "../boardStore";
+import gameStore from "../gameStore";
+
+import { Direction, TurnStage } from "../../types";
 import type { Player } from "../../classes";
 import LogEntry from "../../classes/LogEntry";
 
 interface PlayerState {
-  players: Player[];
-  setPlayers: (players: Player[]) => void;
   rollDieForPlayer: (player: Player) => void;
   movePlayer: (player: Player, direction: Direction) => void;
 }
 
-const usePlayersStore = create<PlayerState>((set, get) => ({
-  players: [],
-  setPlayers: (players) => set({ players }),
-
+const usePlayersStore = create<PlayerState>(() => ({
   rollDieForPlayer: (player) => {
     player.rollDie();
-    set({ players: [...get().players] });
-
-    useLogStore.getState().addLog(
+    boardStore.getState().setPlayers([...boardStore.getState().players]);
+    gameStore.getState().setStage(TurnStage.moving);
+    logStore.getState().addLog(
       LogEntry.playerRolledDie({
         playerName: player.name,
         dieValue: player.die,
@@ -29,6 +27,28 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
   },
 
   movePlayer: (player, direction) => {
+    const boardState = boardStore.getState();
+    const logState = logStore.getState();
+    const gameState = gameStore.getState();
+
+    const nextCoordinate = player.nextCoordinate(direction);
+
+    if (!player.stepsRemaining) return;
+    if (gameState.stage !== TurnStage.moving) return;
+    if (boardState.buildingsMap.has(`${nextCoordinate.x},${nextCoordinate.y}`))
+      return;
+    if (
+      nextCoordinate.x < 0 ||
+      nextCoordinate.y < 0 ||
+      nextCoordinate.x >= boardState.size ||
+      nextCoordinate.y >= boardState.size
+    )
+      return;
+
+    const nextCoordinatePod = boardState.podsMap.get(
+      `${nextCoordinate.x},${nextCoordinate.y}`,
+    );
+
     switch (direction) {
       case Direction.up:
         player.moveUp();
@@ -44,14 +64,35 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
         break;
     }
 
-    useLogStore.getState().addLog(
+    logState.addLog(
       LogEntry.playerMoved({
         playerName: player.name,
         coordinate: player.coordinate,
         direction,
       }),
     );
-    set({ players: [...get().players] });
+
+    if (nextCoordinatePod) {
+      player.registerPodDamage(nextCoordinatePod);
+
+      logState.addLog(
+        LogEntry.podActivated(player.name, nextCoordinatePod.name),
+      );
+
+      logState.addLog(
+        LogEntry.podDamagedPlayer({
+          playerName: player.name,
+          podDamage: nextCoordinatePod.damage,
+          podName: nextCoordinatePod.name,
+        }),
+      );
+    }
+
+    boardState.setPlayers([...boardState.players]);
+
+    if (!player.stepsRemaining) {
+      gameState.nextTurn();
+    }
   },
 }));
 

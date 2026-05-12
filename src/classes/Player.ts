@@ -1,4 +1,5 @@
-import type { Item, Coordinate } from "../types";
+import type { Item, Coordinate, Pod } from "../types";
+import { Direction } from "../types";
 
 export default class Player {
   public healthPoints: number;
@@ -25,6 +26,13 @@ export default class Player {
     this._coordinate = coordinate;
   }
 
+  public registerPodDamage(pod: Pod): this {
+    this.healthPoints -= pod.damage;
+
+    return this;
+  }
+
+  // to be used/deleted later on/someday
   public moveTo(coordinate: Coordinate): this {
     this._coordinate = coordinate;
 
@@ -68,6 +76,15 @@ export default class Player {
     this._die = Math.floor(Math.random() * 6) + 1;
     this._stepsRemaining = this._die;
     return this._die;
+  }
+
+  public nextCoordinate(direction: Direction): Coordinate {
+    return {
+      [Direction.up]: { x: this.coordinate.x, y: this.coordinate.y - 1 },
+      [Direction.down]: { x: this.coordinate.x, y: this.coordinate.y + 1 },
+      [Direction.left]: { x: this.coordinate.x - 1, y: this.coordinate.y },
+      [Direction.right]: { x: this.coordinate.x + 1, y: this.coordinate.y },
+    }[direction];
   }
 
   get die(): number {

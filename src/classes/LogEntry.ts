@@ -23,6 +23,18 @@ export default class LogEntry {
     );
   }
 
+  static podDamagedPlayer({
+    playerName,
+    podName,
+    podDamage,
+  }: {
+    playerName: string;
+    podName: string;
+    podDamage: number;
+  }) {
+    return new LogEntry(`${podName} dealt ${podDamage} to ${playerName}`);
+  }
+
   static itemPickedUp(playerName: string, itemName: string): LogEntry {
     return new LogEntry(`${playerName} picked up ${itemName}`);
   }

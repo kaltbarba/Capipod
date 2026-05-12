@@ -11,10 +11,16 @@ export interface Item {
 }
 
 export type Direction = "up" | "down" | "left" | "right";
-
 export const Direction: { [k in Direction]: k } = {
   up: "up",
   down: "down",
   right: "right",
   left: "left",
+};
+
+export type TurnStage = "start" | "moving" | "end";
+export const TurnStage: { [k in TurnStage]: TurnStage } = {
+  start: "start",
+  moving: "moving",
+  end: "end",
 };
