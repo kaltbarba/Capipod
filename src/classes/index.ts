@@ -1,4 +1,3 @@
-import type Building from "./Building";
-import type Pod from "./Pod";
-
-export type { Building, Pod };
+export { default as Building } from "./Building";
+export { default as Player } from "./Player";
+export { default as Pod } from "./Pod";

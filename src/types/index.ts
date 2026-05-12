@@ -4,3 +4,10 @@ export type Coordinate = {
 };
 
 export type PodState = "idle" | "active" | "disabled";
+
+export interface Item {
+  id: string | number;
+  name: string;
+}
+
+export type Direction = "up" | "down" | "left" | "right";
