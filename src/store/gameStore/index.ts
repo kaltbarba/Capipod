@@ -9,6 +9,7 @@ interface GameState {
   stage: TurnStage;
   setStage: (stage: TurnStage) => void;
   nextTurn: () => void;
+  finish: () => void;
 }
 
 const useGameStore = create<GameState>((set) => ({
@@ -22,6 +23,11 @@ const useGameStore = create<GameState>((set) => ({
     }));
   },
   setStage: (stage) => set({ stage }),
+  finish: () => {
+    set({
+      stage: TurnStage.end,
+    });
+  },
 }));
 
 export default useGameStore;

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { Player, Pod, Building } from "../../classes";
+import type { Coordinate } from "../../types";
 
 interface BoardState {
   size: number;
@@ -14,6 +15,8 @@ interface BoardState {
 
   players: Player[];
   setPlayers: (players: Player[]) => void;
+
+  shelterCoordinate: Coordinate;
 }
 
 const useBoardStore = create<BoardState>((set) => ({
@@ -41,6 +44,7 @@ const useBoardStore = create<BoardState>((set) => ({
     );
     set({ buildings, buildingsMap });
   },
+  shelterCoordinate: { x: 15, y: 15 },
 }));
 
 export default useBoardStore;

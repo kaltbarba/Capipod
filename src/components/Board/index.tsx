@@ -1,12 +1,11 @@
 import Player from "../../classes/Player";
-import Building from "../../classes/Building";
-import Pod from "../../classes/Pod";
 
 import "./index.scss";
 
-import PlayerComponent from "./Player";
-
 import { useBoardStore } from "../../store";
+
+import PlayerIcon from "../../assets/player.svg?react";
+import ShelterIcon from "../../assets/shelter.svg?react";
 
 export default function Board({
   players = [],
@@ -15,7 +14,7 @@ export default function Board({
   size: number;
   players: Player[];
 }) {
-  const { buildingsMap, podsMap } = useBoardStore();
+  const { buildingsMap, podsMap, shelterCoordinate } = useBoardStore();
 
   const playersMap = new Map<string, Player>(
     players.map((player) => [
@@ -41,7 +40,13 @@ export default function Board({
                 pod?.state,
               ].join(" ")}
             >
-              {player ? <PlayerComponent player={player} /> : `${x},${y}`}
+              {player && (
+                <PlayerIcon width={40} height={40} style={{ color: "red" }} />
+              )}
+
+              {x === shelterCoordinate.x && y === shelterCoordinate.y && (
+                <ShelterIcon width={40} height={40} />
+              )}
             </div>
           );
         }),

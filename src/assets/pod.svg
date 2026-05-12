@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Manhole/ground plate -->
+  <ellipse cx="12" cy="20" rx="9" ry="2.5" fill="#333" />
+  <ellipse cx="12" cy="20" rx="7" ry="1.8" fill="#3d3d3d" />
+  <!-- Concentric rings on plate -->
+  <ellipse cx="12" cy="20" rx="5" ry="1.2" fill="none" stroke="#555" stroke-width="0.5" />
+  <ellipse cx="12" cy="20" rx="2.5" ry="0.6" fill="none" stroke="#555" stroke-width="0.5" />
+  <!-- Pod mechanism rising -->
+  <rect x="10" y="10" width="4" height="10" rx="0.5" fill="#2a2a2a" />
+  <!-- Pod head - trap device -->
+  <rect x="7" y="6" width="10" height="6" rx="1" fill="#1a1a1a" />
+  <!-- Warning light -->
+  <circle cx="12" cy="4" r="2" fill="#cc2200" />
+  <circle cx="12" cy="4" r="1" fill="#ff4422" />
+  <!-- Spikes/triggers -->
+  <line x1="7" y1="7" x2="4" y2="5" stroke="#cc2200" stroke-width="1" stroke-linecap="round" />
+  <line x1="7" y1="10" x2="4" y2="11" stroke="#cc2200" stroke-width="1" stroke-linecap="round" />
+  <line x1="17" y1="7" x2="20" y2="5" stroke="#cc2200" stroke-width="1" stroke-linecap="round" />
+  <line x1="17" y1="10" x2="20" y2="11" stroke="#cc2200" stroke-width="1" stroke-linecap="round" />
+  <!-- Lens/sensor -->
+  <circle cx="12" cy="9" r="2" fill="#222" />
+  <circle cx="12" cy="9" r="1.2" fill="#cc2200" opacity="0.6" />
+</svg>

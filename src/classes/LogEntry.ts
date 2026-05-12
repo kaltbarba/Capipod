@@ -52,4 +52,12 @@ export default class LogEntry {
   }): LogEntry {
     return new LogEntry(`${playerName} rolled a ${dieValue}`);
   }
+
+  static playerReachedShelter({
+    playerName,
+  }: {
+    playerName: string;
+  }): LogEntry {
+    return new LogEntry(`${playerName} reached the shelter. Game ended.`);
+  }
 }
