@@ -1,0 +1,35 @@
+CAPIPOD V1.0
+
+
+Players: min 1, max 2
+Grid Board:  40 x 40
+
+Health points: 5
+
+
+GRID Elements
+Buildings: 1 and 2 cells
+pods: 1 cell
+players: 1 cell
+potion: 1 cell
+stones: 1 cell
+holo charger (radar): 1 cell
+
+LOG
+movements
+damage
+activate /desactivate pods
+die #
+
+
+
+ELEMENTS
+die: 1-6 (steps)
+inventory/bag: 3 (max 3: potion, stones, holo charger)
+
+POD 
+pod states: idle, triggered
+pod visivility: hidden, visible
+trigger: -1
+
+
