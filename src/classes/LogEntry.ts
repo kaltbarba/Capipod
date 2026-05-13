@@ -35,7 +35,13 @@ export default class LogEntry {
     return new LogEntry(`${podName} dealt ${podDamage} to ${playerName}`);
   }
 
-  static itemPickedUp(playerName: string, itemName: string): LogEntry {
+  static itemPickedUp({
+    playerName,
+    itemName,
+  }: {
+    playerName: string;
+    itemName: string;
+  }): LogEntry {
     return new LogEntry(`${playerName} picked up ${itemName}`);
   }
 
@@ -59,5 +65,29 @@ export default class LogEntry {
     playerName: string;
   }): LogEntry {
     return new LogEntry(`${playerName} reached the shelter. Game ended.`);
+  }
+
+  static allPodsRevealed(): LogEntry {
+    return new LogEntry(`All pods are now visible`);
+  }
+
+  static playerHealed({
+    playerName,
+    amount,
+  }: {
+    playerName: string;
+    amount: number;
+  }): LogEntry {
+    return new LogEntry(`${playerName} healed for ${amount} HP`);
+  }
+
+  static playerUsedItem({
+    playerName,
+    itemName,
+  }: {
+    playerName: string;
+    itemName: string;
+  }): LogEntry {
+    return new LogEntry(`${playerName} used ${itemName}`);
   }
 }

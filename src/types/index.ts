@@ -3,15 +3,14 @@ export type Coordinate = {
   y: number;
 };
 
+export type CoordinateKey = `${number},${number}`;
+
 export type PodState = "idle" | "active" | "disabled";
 
-export interface Item {
-  id: string | number;
-  name: string;
-}
+type StringEnum<T extends string> = { [K in T]: K };
 
 export type Direction = "up" | "down" | "left" | "right";
-export const Direction: { [k in Direction]: k } = {
+export const Direction: StringEnum<Direction> = {
   up: "up",
   down: "down",
   right: "right",
@@ -19,8 +18,23 @@ export const Direction: { [k in Direction]: k } = {
 };
 
 export type TurnStage = "start" | "moving" | "end";
-export const TurnStage: { [k in TurnStage]: TurnStage } = {
+export const TurnStage: StringEnum<TurnStage> = {
   start: "start",
   moving: "moving",
   end: "end",
 };
+
+export type Trigger = "auto" | "pickup";
+export const Trigger: StringEnum<Trigger> = {
+  auto: "auto",
+  pickup: "pickup",
+};
+
+export type EffectType = "heal" | "activatePod";
+export const EffectType: StringEnum<EffectType> = {
+  heal: "heal",
+  activatePod: "activatePod",
+};
+export type Effect =
+  | { type: typeof EffectType.heal; amount: number }
+  | { type: typeof EffectType.activatePod; range: number };

@@ -1,6 +1,9 @@
 import { create } from "zustand";
 
+import LogEntry from "../../classes/LogEntry";
+
 import boardStore from "../boardStore";
+import logStore from "../logStore";
 
 import { TurnStage } from "../../types";
 
@@ -10,6 +13,8 @@ interface GameState {
   setStage: (stage: TurnStage) => void;
   nextTurn: () => void;
   finish: () => void;
+  podsRevealed: boolean;
+  revealPods: () => void;
 }
 
 const useGameStore = create<GameState>((set) => ({
@@ -27,6 +32,11 @@ const useGameStore = create<GameState>((set) => ({
     set({
       stage: TurnStage.end,
     });
+  },
+  podsRevealed: false,
+  revealPods() {
+    logStore.getState().addLog(LogEntry.allPodsRevealed());
+    set({ podsRevealed: true });
   },
 }));
 

@@ -1,10 +1,12 @@
-import type { Item, Coordinate, Pod } from "../types";
+import type { Coordinate } from "../types";
 import { Direction } from "../types";
+
+import type { GameItem, Pod } from ".";
 
 export default class Player {
   public healthPoints: number;
   public name: string;
-  private _items: Item[];
+  public inventory: GameItem[];
   private _coordinate: Coordinate;
   private _die: number = 0;
   private _stepsRemaining: number = 0;
@@ -12,17 +14,17 @@ export default class Player {
   constructor({
     healthPoints,
     name,
-    items,
+    inventory,
     coordinate,
   }: {
     healthPoints: number;
     name: string;
-    items: Item[];
+    inventory: GameItem[];
     coordinate: Coordinate;
   }) {
     this.healthPoints = healthPoints;
     this.name = name;
-    this._items = items;
+    this.inventory = inventory;
     this._coordinate = coordinate;
   }
 
@@ -40,7 +42,7 @@ export default class Player {
   }
 
   public moveUp(): this {
-    this.coordinate.y -= 1;
+    this._coordinate.y -= 1;
     this._stepsRemaining--;
     return this;
   }
@@ -63,8 +65,13 @@ export default class Player {
     return this;
   }
 
-  public pickUpItem(item: Item): this {
-    this._items.push(item);
+  public addToInventory(item: GameItem): this {
+    this.inventory.push(item);
+    return this;
+  }
+
+  public removeFromInventory(item: GameItem): this {
+    this.inventory = this.inventory.filter((i) => i.id !== item.id);
     return this;
   }
 
@@ -93,5 +100,11 @@ export default class Player {
 
   get stepsRemaining(): number {
     return this._stepsRemaining;
+  }
+
+  public heal(amount: number): this {
+    this.healthPoints += amount;
+
+    return this;
   }
 }

@@ -3,6 +3,7 @@ import Board from "./components/Board";
 
 import PodsData from "./data/pods";
 import BuildingsData from "./data/buildings";
+import ItemsData from "./data/items";
 
 import Player from "./classes/Player";
 import { Direction } from "./types";
@@ -18,28 +19,30 @@ import "./App.css";
 
 function App() {
   const { rollDieForPlayer, movePlayer } = usePlayersStore();
-  const { players, setPlayers, setBuildings, setPods, size } = useBoardStore();
+  const { players, setPlayers, setBuildings, setPods, size, setItems } =
+    useBoardStore();
   const { logs } = useLogStore();
-  const { stage, currentPlayerIndex } = useGameStore();
+  const { stage, currentPlayerIndex, revealPods } = useGameStore();
 
   useEffect(() => {
     setPlayers([
       new Player({
         name: "Kenny",
         healthPoints: 5,
-        items: [],
+        inventory: [],
         coordinate: { x: 0, y: 0 },
       }),
       new Player({
         name: "Andres",
         healthPoints: 5,
-        items: [],
+        inventory: [],
         coordinate: { x: 29, y: 29 },
       }),
     ]);
 
     setBuildings(BuildingsData);
     setPods(PodsData);
+    setItems(ItemsData);
   }, []);
 
   useEffect(() => {
@@ -73,13 +76,14 @@ function App() {
 
   return (
     <div className="App">
-      <Board size={size} players={players} />
+      <Board size={size} />
 
       <div>
         <div>
           <h5>Game state</h5>
           <div>{stage}</div>
         </div>
+
         <div className="player-info">
           {players.map((player) => (
             <div
@@ -98,6 +102,7 @@ function App() {
               </button>
               <span>Die: {player.die || "Roll it"}</span>
               <p>steps available: {player.stepsRemaining}</p>
+              <div>Items in inventory: {player.inventory.length}</div>
             </div>
           ))}
         </div>
@@ -115,6 +120,10 @@ function App() {
             ))}
           </div>
         </div>
+
+        <button className="button" onClick={revealPods}>
+          Reveal all pods
+        </button>
       </div>
     </div>
   );

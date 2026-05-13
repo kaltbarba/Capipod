@@ -4,13 +4,27 @@ import logStore from "../logStore";
 import boardStore from "../boardStore";
 import gameStore from "../gameStore";
 
-import { Direction, TurnStage, type Coordinate } from "../../types";
-import type { Player } from "../../classes";
+import {
+  Direction,
+  TurnStage,
+  type Coordinate,
+  type Effect,
+  EffectType,
+  Trigger,
+} from "../../types";
+import type { Player, GameItem } from "../../classes";
 import LogEntry from "../../classes/LogEntry";
+
+type UseItemParams = {
+  player: Player;
+  item: GameItem;
+  direction?: Direction;
+};
 
 interface PlayerState {
   rollDieForPlayer: (player: Player) => void;
   movePlayer: (player: Player, direction: Direction) => void;
+  useItem: (params: UseItemParams) => void;
 }
 
 function isMovingAllowed({
@@ -38,7 +52,38 @@ function isMovingAllowed({
   return true;
 }
 
+function applyItemEffect({
+  effect,
+  player,
+}: {
+  effect: Effect;
+  player: Player;
+}): void {
+  switch (effect.type) {
+    case EffectType.heal:
+      player.heal(effect.amount);
+      logStore.getState().addLog(
+        LogEntry.playerHealed({
+          amount: effect.amount,
+          playerName: player.name,
+        }),
+      );
+      break;
+    default:
+      break;
+  }
+}
+
 const usePlayersStore = create<PlayerState>(() => ({
+  useItem: (params) => {
+    const boardState = boardStore.getState();
+    const { player, item } = params;
+
+    applyItemEffect({ player, effect: item.effect });
+    player.removeFromInventory(item);
+    boardState.setPlayers([...boardState.players]);
+  },
+
   rollDieForPlayer: (player) => {
     player.rollDie();
     boardStore.getState().setPlayers([...boardStore.getState().players]);
@@ -53,15 +98,14 @@ const usePlayersStore = create<PlayerState>(() => ({
 
   movePlayer: (player, direction) => {
     const nextCoordinate = player.nextCoordinate(direction);
+
+    // validate movement
     if (!isMovingAllowed({ player, nextCoordinate })) return;
 
+    // MOVEMENT LOGIC TO NEXT COORDINATE
     const boardState = boardStore.getState();
     const logState = logStore.getState();
     const gameState = gameStore.getState();
-
-    const nextCoordinatePod = boardState.podsMap.get(
-      `${nextCoordinate.x},${nextCoordinate.y}`,
-    );
 
     switch (direction) {
       case Direction.up:
@@ -86,25 +130,51 @@ const usePlayersStore = create<PlayerState>(() => ({
       }),
     );
 
-    if (nextCoordinatePod) {
-      player.registerPodDamage(nextCoordinatePod);
+    // VERIFIES PODS ON NEW LOCATION = current player location after moving them
+    const podAtCoordinate = boardState.podsMap.get(
+      `${player.coordinate.x},${player.coordinate.y}`,
+    );
 
-      logState.addLog(
-        LogEntry.podActivated(player.name, nextCoordinatePod.name),
-      );
+    if (podAtCoordinate) {
+      player.registerPodDamage(podAtCoordinate);
+
+      logState.addLog(LogEntry.podActivated(player.name, podAtCoordinate.name));
 
       logState.addLog(
         LogEntry.podDamagedPlayer({
           playerName: player.name,
-          podDamage: nextCoordinatePod.damage,
-          podName: nextCoordinatePod.name,
+          podDamage: podAtCoordinate.damage,
+          podName: podAtCoordinate.name,
         }),
       );
     }
 
+    // VERIFIERS ITEM ON NEW LOCATION
+    const itemAtCoordinate = boardState.itemsMap.get(
+      `${player.coordinate.x},${player.coordinate.y}`,
+    );
+
+    if (itemAtCoordinate) {
+      switch (itemAtCoordinate.trigger) {
+        case Trigger.pickup:
+          player.addToInventory(itemAtCoordinate);
+          logState.addLog(
+            LogEntry.itemPickedUp({
+              playerName: player.name,
+              itemName: itemAtCoordinate.name,
+            }),
+          );
+          boardState.removeItem(
+            `${itemAtCoordinate.coordinate.x},${itemAtCoordinate.coordinate.y}`,
+          );
+          break;
+        default:
+          break;
+      }
+    }
+
     boardState.setPlayers([...boardState.players]);
 
-    console.log({ boardState, player });
     if (
       boardState.shelterCoordinate.x === player.coordinate.x &&
       boardState.shelterCoordinate.y === player.coordinate.y
