@@ -47,7 +47,7 @@ const ItemsData: GameItem[] = [
     name: "Rock",
     category: ItemCategory.rock,
     trigger: Trigger.pickup,
-    effect: { type: EffectType.activatePod, range: 1 },
+    effect: { type: EffectType.activatePod },
     coordinate: { x: 1, y: 0 },
   },
   {
@@ -55,7 +55,7 @@ const ItemsData: GameItem[] = [
     name: "Rock",
     category: ItemCategory.rock,
     trigger: Trigger.pickup,
-    effect: { type: EffectType.activatePod, range: 1 },
+    effect: { type: EffectType.activatePod },
     coordinate: { x: 6, y: 14 },
   },
   {
@@ -63,7 +63,7 @@ const ItemsData: GameItem[] = [
     name: "Rock",
     category: ItemCategory.rock,
     trigger: Trigger.pickup,
-    effect: { type: EffectType.activatePod, range: 1 },
+    effect: { type: EffectType.activatePod },
     coordinate: { x: 11, y: 9 },
   },
   {
@@ -71,7 +71,7 @@ const ItemsData: GameItem[] = [
     name: "Rock",
     category: ItemCategory.rock,
     trigger: Trigger.pickup,
-    effect: { type: EffectType.activatePod, range: 1 },
+    effect: { type: EffectType.activatePod },
     coordinate: { x: 20, y: 5 },
   },
   {
@@ -79,7 +79,7 @@ const ItemsData: GameItem[] = [
     name: "Rock",
     category: ItemCategory.rock,
     trigger: Trigger.pickup,
-    effect: { type: EffectType.activatePod, range: 1 },
+    effect: { type: EffectType.activatePod },
     coordinate: { x: 24, y: 16 },
   },
   {
@@ -87,7 +87,7 @@ const ItemsData: GameItem[] = [
     name: "Rock",
     category: ItemCategory.rock,
     trigger: Trigger.pickup,
-    effect: { type: EffectType.activatePod, range: 1 },
+    effect: { type: EffectType.activatePod },
     coordinate: { x: 17, y: 28 },
   },
 ];

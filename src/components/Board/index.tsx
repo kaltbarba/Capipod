@@ -1,4 +1,4 @@
-import { ItemCategory } from "../../types";
+import { ItemCategory, PodState } from "../../types";
 
 import "./index.scss";
 
@@ -25,23 +25,33 @@ export default function Board({ size }: { size: number }) {
           const player = playersMap.get(`${x},${y}`);
           const item = itemsMap.get(`${x},${y}`);
 
+          const podClass = pod
+            ? pod.state !== PodState.idle || podsRevealed
+              ? pod.state
+              : ""
+            : "";
+
           return (
             <div
               key={`${x},${y}`}
               className={[
                 "board-cell",
                 building ? "building" : "",
-                podsRevealed && pod ? pod?.state : "",
+                podClass,
               ].join(" ")}
             >
               {player && (
                 <PlayerIcon width={40} height={40} style={{ color: "red" }} />
               )}
 
+              {pod?.state === PodState.active && (
+                <span>{pod.activeTurnsRemaining}</span>
+              )}
+
               {item ? (
                 item.category === ItemCategory.potion ? (
                   <PotionIcon width={24} height={24} />
-                ) : item?.category === ItemCategory.rock ? (
+                ) : item.category === ItemCategory.rock ? (
                   <RockIcon width={24} height={24} />
                 ) : null
               ) : null}

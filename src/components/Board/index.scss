@@ -15,11 +15,12 @@
     }
 
     &.active {
+      position: relative;
       background-color: red;
     }
 
-    &.destroyed {
-      background-color: green;
+    &.disabled {
+      background-color: #3a3a3a;
     }
 
     &.building {

@@ -5,12 +5,14 @@ import boardStore from "../boardStore";
 import gameStore from "../gameStore";
 
 import * as LogEntry from "../../utils/logEntry";
+import { getCoordinateKey } from "../../utils";
 
 import {
   Direction,
   TurnStage,
   EffectType,
   Trigger,
+  PodState,
   type Coordinate,
   type CoordinateKey,
   type Player,
@@ -57,7 +59,7 @@ function isMovingAllowed({
 
   if (!player.stepsRemaining) return false;
   if (gameState.stage !== TurnStage.moving) return false;
-  if (boardState.buildingsMap.has(`${nextCoordinate.x},${nextCoordinate.y}`))
+  if (boardState.buildingsMap.has(getCoordinateKey(nextCoordinate)))
     return false;
   if (
     nextCoordinate.x < 0 ||
@@ -84,8 +86,7 @@ const effectHandler: EffectHandler = {
     if (!direction) return {};
 
     const nextCoordinate = getNextCoordinate(player, direction);
-    const coordinateKey: CoordinateKey = `${nextCoordinate.x},${nextCoordinate.y}`;
-    return { boardUpdate: { activatePod: coordinateKey } };
+    return { boardUpdate: { activatePod: getCoordinateKey(nextCoordinate) } };
   },
 };
 
@@ -98,10 +99,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
   playersMap: new Map(),
   setPlayers: (players) => {
     const playersMap = new Map<CoordinateKey, Player>(
-      players.map((player) => [
-        `${player.coordinate.x},${player.coordinate.y}`,
-        player,
-      ]),
+      players.map((player) => [getCoordinateKey(player.coordinate), player]),
     );
     set({ players, playersMap });
   },
@@ -154,6 +152,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
 
   movePlayer: (player, direction) => {
     const nextCoordinate = getNextCoordinate(player, direction);
+    const nextCoordinateKey = getCoordinateKey(nextCoordinate);
 
     if (!isMovingAllowed({ player, nextCoordinate })) return;
 
@@ -175,11 +174,11 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
       }),
     );
 
-    const podAtCoordinate = boardState.podsMap.get(
-      `${nextCoordinate.x},${nextCoordinate.y}`,
-    );
-
-    if (podAtCoordinate) {
+    const podAtCoordinate = boardState.podsMap.get(nextCoordinateKey);
+    if (podAtCoordinate && podAtCoordinate.state !== PodState.disabled) {
+      if (podAtCoordinate.state === PodState.idle) {
+        boardState.activatePod(nextCoordinateKey);
+      }
       updatedPlayer = {
         ...updatedPlayer,
         healthPoints: updatedPlayer.healthPoints - podAtCoordinate.damage,
@@ -194,9 +193,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
       );
     }
 
-    const itemAtCoordinate = boardState.itemsMap.get(
-      `${nextCoordinate.x},${nextCoordinate.y}`,
-    );
+    const itemAtCoordinate = boardState.itemsMap.get(nextCoordinateKey);
 
     if (itemAtCoordinate) {
       switch (itemAtCoordinate.trigger) {
@@ -211,9 +208,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
               itemName: itemAtCoordinate.name,
             }),
           );
-          boardState.removeItem(
-            `${itemAtCoordinate.coordinate.x},${itemAtCoordinate.coordinate.y}`,
-          );
+          boardState.removeItem(getCoordinateKey(itemAtCoordinate.coordinate));
           break;
         default:
           break;

@@ -21,6 +21,7 @@ const useGameStore = create<GameState>((set) => ({
   currentPlayerIndex: 0,
   stage: TurnStage.start,
   nextTurn: (totalPlayers) => {
+    boardStore.getState().tickPods();
     set((state) => ({
       stage: TurnStage.start,
       currentPlayerIndex: (state.currentPlayerIndex + 1) % totalPlayers,
@@ -31,6 +32,8 @@ const useGameStore = create<GameState>((set) => ({
     set({
       stage: TurnStage.end,
     });
+    set({ podsRevealed: true });
+    boardStore.getState().disableAllPods();
   },
   podsRevealed: false,
   revealPods() {

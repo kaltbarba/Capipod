@@ -5,14 +5,14 @@ export type Coordinate = {
 
 export type CoordinateKey = `${number},${number}`;
 
+type StringEnum<T extends string> = { [K in T]: K };
+
 export type PodState = "idle" | "active" | "disabled";
 export const PodState: StringEnum<PodState> = {
   idle: "idle",
   active: "active",
   disabled: "disabled",
 };
-
-type StringEnum<T extends string> = { [K in T]: K };
 
 export type Direction = "up" | "down" | "left" | "right";
 export const Direction: StringEnum<Direction> = {
@@ -46,9 +46,10 @@ export const EffectType: StringEnum<EffectType> = {
   heal: "heal",
   activatePod: "activatePod",
 };
+
 export type Effect =
   | { type: typeof EffectType.heal; amount: number }
-  | { type: typeof EffectType.activatePod; range: number };
+  | { type: typeof EffectType.activatePod };
 
 export type LogEntry = {
   timestamp: Date;
@@ -66,7 +67,6 @@ export type GameItem = {
 
 export type Building = {
   coordinates: Coordinate[];
-  color: string;
 };
 
 export type Pod = {
@@ -75,6 +75,8 @@ export type Pod = {
   coordinate: Coordinate;
   state: PodState;
   damage: number;
+  duration: number;
+  activeTurnsRemaining: number;
 };
 
 export type Player = {
