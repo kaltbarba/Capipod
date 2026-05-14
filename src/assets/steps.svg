@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Left foot (bottom-left) -->
+  <ellipse cx="7" cy="20.5" rx="2.5" ry="3" fill="#3a3a3a" stroke="#666" stroke-width="0.5"/>
+  <circle cx="5"   cy="17.5" r="0.7"  fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="6.4" cy="17"   r="0.75" fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="7.8" cy="17"   r="0.75" fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="9.2" cy="17.5" r="0.7"  fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+
+  <!-- Right foot (middle-right) -->
+  <ellipse cx="17" cy="13" rx="2.5" ry="3" fill="#3a3a3a" stroke="#666" stroke-width="0.5"/>
+  <circle cx="15"   cy="10"  r="0.7"  fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="16.4" cy="9.5" r="0.75" fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="17.8" cy="9.5" r="0.75" fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="19.2" cy="10"  r="0.7"  fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+
+  <!-- Left foot (top-left) -->
+  <ellipse cx="7" cy="5.5" rx="2.5" ry="3" fill="#3a3a3a" stroke="#666" stroke-width="0.5"/>
+  <circle cx="5"   cy="2.5" r="0.7"  fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="6.4" cy="2"   r="0.75" fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="7.8" cy="2"   r="0.75" fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+  <circle cx="9.2" cy="2.5" r="0.7"  fill="#3a3a3a" stroke="#666" stroke-width="0.35"/>
+</svg>

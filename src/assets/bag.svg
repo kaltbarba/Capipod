@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Shoulder straps -->
+  <path d="M8 10 Q7 5 10 4" fill="none" stroke="#8B6914" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M16 10 Q17 5 14 4" fill="none" stroke="#8B6914" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Neck strap connector -->
+  <path d="M10 4 Q12 3 14 4" fill="none" stroke="#8B6914" stroke-width="1" stroke-linecap="round"/>
+  <!-- Bag body, round bottom -->
+  <path d="M5 10 Q4 10 4 12 L4 17 Q4 22 12 22 Q20 22 20 17 L20 12 Q20 10 19 10 Z"
+        fill="#2a1f14" stroke="#8B6914" stroke-width="0.6"/>
+  <!-- Top flap -->
+  <path d="M5 10 Q5 7 12 7 Q19 7 19 10 Q12 11.5 5 10 Z" fill="#3d2b1f" stroke="#8B6914" stroke-width="0.5"/>
+  <!-- Centre buckle -->
+  <rect x="10" y="14" width="4" height="3" rx="0.6" fill="#C8A800"/>
+  <rect x="10.8" y="14.8" width="2.4" height="1.4" rx="0.2" fill="#2a1f14"/>
+  <!-- Side stitch lines -->
+  <line x1="7" y1="11" x2="7" y2="20" stroke="#8B6914" stroke-width="0.3" stroke-dasharray="1 1.5" opacity="0.6"/>
+  <line x1="17" y1="11" x2="17" y2="20" stroke="#8B6914" stroke-width="0.3" stroke-dasharray="1 1.5" opacity="0.6"/>
+</svg>

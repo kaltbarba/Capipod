@@ -30,6 +30,12 @@ export const Trigger: StringEnum<Trigger> = {
   pickup: "pickup",
 };
 
+export type ItemCategory = "potion" | "rock";
+export const ItemCategory: StringEnum<ItemCategory> = {
+  potion: "potion",
+  rock: "rock",
+};
+
 export type EffectType = "heal" | "activatePod";
 export const EffectType: StringEnum<EffectType> = {
   heal: "heal",

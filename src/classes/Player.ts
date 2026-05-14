@@ -66,7 +66,7 @@ export default class Player {
   }
 
   public addToInventory(item: GameItem): this {
-    this.inventory.push(item);
+    this.inventory = [...this.inventory, item];
     return this;
   }
 

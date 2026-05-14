@@ -1,10 +1,11 @@
 import GameItem from "../classes/GameItem";
-import { EffectType, Trigger } from "../types";
+import { EffectType, ItemCategory, Trigger } from "../types";
 
 const ItemsData: GameItem[] = [
   new GameItem({
     id: "potion-1",
     name: "Health Potion",
+    category: ItemCategory.potion,
     trigger: Trigger.pickup,
     effect: { type: EffectType.heal, amount: 1 },
     coordinate: { x: 0, y: 1 },
@@ -12,6 +13,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "potion-2",
     name: "Health Potion",
+    category: ItemCategory.potion,
     trigger: Trigger.pickup,
     effect: { type: EffectType.heal, amount: 1 },
     coordinate: { x: 12, y: 4 },
@@ -19,6 +21,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "potion-3",
     name: "Health Potion",
+    category: ItemCategory.potion,
     trigger: Trigger.pickup,
     effect: { type: EffectType.heal, amount: 1 },
     coordinate: { x: 18, y: 22 },
@@ -26,6 +29,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "potion-4",
     name: "Health Potion",
+    category: ItemCategory.potion,
     trigger: Trigger.pickup,
     effect: { type: EffectType.heal, amount: 1 },
     coordinate: { x: 25, y: 10 },
@@ -33,6 +37,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "potion-5",
     name: "Health Potion",
+    category: ItemCategory.potion,
     trigger: Trigger.pickup,
     effect: { type: EffectType.heal, amount: 1 },
     coordinate: { x: 8, y: 27 },
@@ -40,6 +45,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "rock-1",
     name: "Rock",
+    category: ItemCategory.rock,
     trigger: Trigger.pickup,
     effect: { type: EffectType.activatePod, range: 1 },
     coordinate: { x: 6, y: 14 },
@@ -47,6 +53,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "rock-2",
     name: "Rock",
+    category: ItemCategory.rock,
     trigger: Trigger.pickup,
     effect: { type: EffectType.activatePod, range: 1 },
     coordinate: { x: 11, y: 9 },
@@ -54,6 +61,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "rock-3",
     name: "Rock",
+    category: ItemCategory.rock,
     trigger: Trigger.pickup,
     effect: { type: EffectType.activatePod, range: 1 },
     coordinate: { x: 20, y: 5 },
@@ -61,6 +69,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "rock-4",
     name: "Rock",
+    category: ItemCategory.rock,
     trigger: Trigger.pickup,
     effect: { type: EffectType.activatePod, range: 1 },
     coordinate: { x: 24, y: 16 },
@@ -68,6 +77,7 @@ const ItemsData: GameItem[] = [
   new GameItem({
     id: "rock-5",
     name: "Rock",
+    category: ItemCategory.rock,
     trigger: Trigger.pickup,
     effect: { type: EffectType.activatePod, range: 1 },
     coordinate: { x: 17, y: 28 },

@@ -15,7 +15,7 @@ import {
 import type { Player, GameItem } from "../../classes";
 import LogEntry from "../../classes/LogEntry";
 
-type UseItemParams = {
+type ConsumeItemParams = {
   player: Player;
   item: GameItem;
   direction?: Direction;
@@ -24,7 +24,7 @@ type UseItemParams = {
 interface PlayerState {
   rollDieForPlayer: (player: Player) => void;
   movePlayer: (player: Player, direction: Direction) => void;
-  useItem: (params: UseItemParams) => void;
+  consumeItem: (params: ConsumeItemParams) => void;
 }
 
 function isMovingAllowed({
@@ -75,7 +75,8 @@ function applyItemEffect({
 }
 
 const usePlayersStore = create<PlayerState>(() => ({
-  useItem: (params) => {
+  consumeItem: (params) => {
+    console.log("consumiinnnng", params);
     const boardState = boardStore.getState();
     const { player, item } = params;
 

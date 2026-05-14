@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Board from "./components/Board";
+import PlayerCard from "./components/Board/PlayerCard";
 
 import PodsData from "./data/pods";
 import BuildingsData from "./data/buildings";
@@ -32,12 +33,12 @@ function App() {
         inventory: [],
         coordinate: { x: 0, y: 0 },
       }),
-      new Player({
-        name: "Andres",
-        healthPoints: 5,
-        inventory: [],
-        coordinate: { x: 29, y: 29 },
-      }),
+      // new Player({
+      //   name: "Andres",
+      //   healthPoints: 5,
+      //   inventory: [],
+      //   coordinate: { x: 29, y: 29 },
+      // }),
     ]);
 
     setBuildings(BuildingsData);
@@ -86,24 +87,7 @@ function App() {
 
         <div className="player-info">
           {players.map((player) => (
-            <div
-              key={player.name}
-              className="border border-gray-100 rounded p-4 mb-4"
-            >
-              <p>
-                {player.name} - HP: {player.healthPoints}
-              </p>
-              <button
-                className="button"
-                disabled={player !== players[currentPlayerIndex]}
-                onClick={() => rollDieForPlayer(players[currentPlayerIndex])}
-              >
-                Roll die
-              </button>
-              <span>Die: {player.die || "Roll it"}</span>
-              <p>steps available: {player.stepsRemaining}</p>
-              <div>Items in inventory: {player.inventory.length}</div>
-            </div>
+            <PlayerCard key={player.name} player={player} />
           ))}
         </div>
 

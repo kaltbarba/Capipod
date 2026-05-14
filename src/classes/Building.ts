@@ -15,9 +15,9 @@ export default class Building {
     color: string;
     boardSize: number;
   }) {
-    if (!isCoordinateValid(coordinates, boardSize)) {
-      throw new Error("Invalid building coordinates");
-    }
+    // if (!isCoordinateValid(coordinates, boardSize)) {
+    //   throw new Error("Invalid building coordinates");
+    // }
 
     this.coordinates = coordinates;
     this.color = color;

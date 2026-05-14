@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Rock body -->
+  <path d="M4 17 Q3 13 5 9 Q8 4 13 4 Q18 4 20 9 Q23 14 20 18 Q17 22 11 22 Q6 22 4 17 Z"
+        fill="#4a4a4a" stroke="#666" stroke-width="0.6"/>
+  <!-- Light facet top-left -->
+  <path d="M7 7 Q10 5 14 6 Q16 7 17 10 Q12 7 7 7 Z" fill="#888" opacity="0.5"/>
+  <!-- Shadow facet bottom-right -->
+  <path d="M17 14 Q19 16 18 19 Q15 22 12 21 Q15 20 17 14 Z" fill="#222" opacity="0.5"/>
+  <!-- Crack -->
+  <path d="M10 8 Q11 11 10 15" stroke="#333" stroke-width="0.6" stroke-linecap="round" opacity="0.8"/>
+</svg>

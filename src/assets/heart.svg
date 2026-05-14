@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Outer glow -->
+  <path d="M12 21 Q3 15 3 9 Q3 4.5 6.5 3.5 Q10 2.5 12 6 Q14 2.5 17.5 3.5 Q21 4.5 21 9 Q21 15 12 21 Z"
+        fill="#6b0000" opacity="0.4"/>
+  <!-- Heart body -->
+  <path d="M12 19.5 Q4 13.5 4 8.5 Q4 5 7 4.2 Q9.5 3.5 12 6.5 Q14.5 3.5 17 4.2 Q20 5 20 8.5 Q20 13.5 12 19.5 Z"
+        fill="#8B0000" stroke="#cc2200" stroke-width="0.5"/>
+  <!-- Shine highlight -->
+  <path d="M8 6.5 Q10 5 12 6.5 Q10 5.5 8 7.5 Z" fill="#ff6666" opacity="0.35"/>
+</svg>
