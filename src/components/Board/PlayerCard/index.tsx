@@ -8,7 +8,7 @@ import DieIcon from "../../../assets/die.svg?react";
 import PotionIcon from "../../../assets/potion.svg?react";
 import RockIcon from "../../../assets/rock.svg?react";
 
-import { usePlayersStore, useBoardStore, useGameStore } from "../../../store";
+import { usePlayersStore, useGameStore } from "../../../store";
 
 export default function PlayerCard({ player }: { player: Player }) {
   const { rollDieForPlayer, consumeItem } = usePlayersStore();
