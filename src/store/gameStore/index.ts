@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import LogEntry from "../../classes/LogEntry";
+import * as LogEntry from "../../utils/logEntry";
 
 import boardStore from "../boardStore";
 import logStore from "../logStore";
@@ -11,7 +11,7 @@ interface GameState {
   currentPlayerIndex: number;
   stage: TurnStage;
   setStage: (stage: TurnStage) => void;
-  nextTurn: () => void;
+  nextTurn: (totalPlayers: number) => void;
   finish: () => void;
   podsRevealed: boolean;
   revealPods: () => void;
@@ -20,11 +20,10 @@ interface GameState {
 const useGameStore = create<GameState>((set) => ({
   currentPlayerIndex: 0,
   stage: TurnStage.start,
-  nextTurn: () => {
+  nextTurn: (totalPlayers) => {
     set((state) => ({
       stage: TurnStage.start,
-      currentPlayerIndex:
-        (state.currentPlayerIndex + 1) % boardStore.getState().players.length,
+      currentPlayerIndex: (state.currentPlayerIndex + 1) % totalPlayers,
     }));
   },
   setStage: (stage) => set({ stage }),

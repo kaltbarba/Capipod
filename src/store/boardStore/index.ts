@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import type { Player, Pod, Building, GameItem } from "../../classes";
+import { PodState } from "../../types";
+import type { Pod, Building, GameItem } from "../../types";
 import type { Coordinate, CoordinateKey } from "../../types";
 
 interface BoardState {
@@ -13,15 +14,12 @@ interface BoardState {
   buildingsMap: Map<CoordinateKey, Building>;
   setBuildings: (buildings: Building[]) => void;
 
-  players: Player[];
-  setPlayers: (players: Player[]) => void;
-  playersMap: Map<CoordinateKey, Player>;
-
   shelterCoordinate: Coordinate;
 
   itemsMap: Map<CoordinateKey, GameItem>;
   setItems: (items: GameItem[]) => void;
   removeItem: (key: CoordinateKey) => void;
+  activatePod: (key: CoordinateKey) => void;
 }
 
 const useBoardStore = create<BoardState>((set) => ({
@@ -33,18 +31,6 @@ const useBoardStore = create<BoardState>((set) => ({
       pods.map((pod) => [`${pod.coordinate.x},${pod.coordinate.y}`, pod]),
     );
     set({ pods, podsMap });
-  },
-
-  players: [],
-  playersMap: new Map(),
-  setPlayers: (players) => {
-    const playersMap = new Map<CoordinateKey, Player>(
-      players.map((player) => [
-        `${player.coordinate.x},${player.coordinate.y}`,
-        player,
-      ]),
-    );
-    set({ players, playersMap });
   },
 
   buildings: [],
@@ -73,6 +59,17 @@ const useBoardStore = create<BoardState>((set) => ({
       const itemsMap = new Map(state.itemsMap);
       itemsMap.delete(coordinateKey);
       return { itemsMap };
+    });
+  },
+  activatePod: (coordinateKey) => {
+    set((state) => {
+      const pod = state.podsMap.get(coordinateKey);
+      if (!pod) return {};
+      const updatedPod = { ...pod, state: PodState.active };
+      const podsMap = new Map(state.podsMap);
+      podsMap.set(coordinateKey, updatedPod);
+      const pods = state.pods.map((p) => (p.id === pod.id ? updatedPod : p));
+      return { pods, podsMap };
     });
   },
 }));

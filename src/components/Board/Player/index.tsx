@@ -1,4 +1,4 @@
-import type { Player as PlayerType } from "../../../classes";
+import type { Player as PlayerType } from "../../../types";
 
 export default function Player({
   color = "red",

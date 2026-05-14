@@ -6,6 +6,11 @@ export type Coordinate = {
 export type CoordinateKey = `${number},${number}`;
 
 export type PodState = "idle" | "active" | "disabled";
+export const PodState: StringEnum<PodState> = {
+  idle: "idle",
+  active: "active",
+  disabled: "disabled",
+};
 
 type StringEnum<T extends string> = { [K in T]: K };
 
@@ -44,3 +49,62 @@ export const EffectType: StringEnum<EffectType> = {
 export type Effect =
   | { type: typeof EffectType.heal; amount: number }
   | { type: typeof EffectType.activatePod; range: number };
+
+export type LogEntry = {
+  timestamp: Date;
+  message: string;
+};
+
+export type GameItem = {
+  id: string;
+  name: string;
+  category: ItemCategory;
+  coordinate: Coordinate;
+  trigger: Trigger;
+  effect: Effect;
+};
+
+export type Building = {
+  coordinates: Coordinate[];
+  color: string;
+};
+
+export type Pod = {
+  id: string | number;
+  name: string;
+  coordinate: Coordinate;
+  state: PodState;
+  damage: number;
+};
+
+export type Player = {
+  id: string;
+  name: string;
+  healthPoints: number;
+  inventory: GameItem[];
+  coordinate: Coordinate;
+  die: number;
+  stepsRemaining: number;
+};
+
+export type EffectContext = {
+  effect: Effect;
+  player: Player;
+  direction?: Direction;
+};
+
+export type EffectResult = {
+  playerUpdate?: Partial<Player>;
+  boardUpdate?: {
+    activatePod?: CoordinateKey;
+  };
+  log?: LogEntry;
+};
+
+export type EffectHandler = {
+  [k in EffectType]: (ctx: {
+    effect: Extract<Effect, { type: k }>;
+    player: Player;
+    direction?: Direction;
+  }) => EffectResult;
+};

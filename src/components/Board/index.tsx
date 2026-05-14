@@ -1,10 +1,8 @@
-import Player from "../../classes/Player";
-
-import { ItemCategory } from "../../types/";
+import { ItemCategory } from "../../types";
 
 import "./index.scss";
 
-import { useBoardStore, useGameStore } from "../../store";
+import { useBoardStore, useGameStore, usePlayersStore } from "../../store";
 
 import PlayerIcon from "../../assets/player.svg?react";
 import ShelterIcon from "../../assets/shelter.svg?react";
@@ -12,9 +10,10 @@ import PotionIcon from "../../assets/potion.svg?react";
 import RockIcon from "../../assets/rock.svg?react";
 
 export default function Board({ size }: { size: number }) {
-  const { buildingsMap, podsMap, shelterCoordinate, playersMap, itemsMap } =
+  const { buildingsMap, podsMap, shelterCoordinate, itemsMap } =
     useBoardStore();
   const { podsRevealed } = useGameStore();
+  const { playersMap } = usePlayersStore();
 
   return (
     <div className="board-container">

@@ -6,7 +6,6 @@ import PodsData from "./data/pods";
 import BuildingsData from "./data/buildings";
 import ItemsData from "./data/items";
 
-import Player from "./classes/Player";
 import { Direction } from "./types";
 
 import {
@@ -19,26 +18,22 @@ import {
 import "./App.css";
 
 function App() {
-  const { rollDieForPlayer, movePlayer } = usePlayersStore();
-  const { players, setPlayers, setBuildings, setPods, size, setItems } =
-    useBoardStore();
+  const { setBuildings, setPods, size, setItems } = useBoardStore();
+  const { players, setPlayers } = usePlayersStore();
   const { logs } = useLogStore();
-  const { stage, currentPlayerIndex, revealPods } = useGameStore();
+  const { stage, revealPods } = useGameStore();
 
   useEffect(() => {
     setPlayers([
-      new Player({
+      {
+        id: "player-1",
         name: "Kenny",
         healthPoints: 5,
         inventory: [],
         coordinate: { x: 0, y: 0 },
-      }),
-      // new Player({
-      //   name: "Andres",
-      //   healthPoints: 5,
-      //   inventory: [],
-      //   coordinate: { x: 29, y: 29 },
-      // }),
+        die: 0,
+        stepsRemaining: 0,
+      },
     ]);
 
     setBuildings(BuildingsData);
@@ -47,19 +42,24 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e): void => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
+      const { players } = usePlayersStore.getState();
+      const { currentPlayerIndex } = useGameStore.getState();
+      const { movePlayer } = usePlayersStore.getState();
+      const currentPlayer = players[currentPlayerIndex];
+
       switch (e.key) {
         case "ArrowUp":
-          movePlayer(players[currentPlayerIndex], Direction.up);
+          movePlayer(currentPlayer, Direction.up);
           break;
         case "ArrowDown":
-          movePlayer(players[currentPlayerIndex], Direction.down);
+          movePlayer(currentPlayer, Direction.down);
           break;
         case "ArrowLeft":
-          movePlayer(players[currentPlayerIndex], Direction.left);
+          movePlayer(currentPlayer, Direction.left);
           break;
         case "ArrowRight":
-          movePlayer(players[currentPlayerIndex], Direction.right);
+          movePlayer(currentPlayer, Direction.right);
           break;
       }
 
@@ -71,9 +71,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [players, movePlayer, currentPlayerIndex]);
-
-  console.log(usePlayersStore(), useLogStore(), useBoardStore());
+  }, []);
 
   return (
     <div className="App">

@@ -1,31 +1,39 @@
-import type { Player } from "../../../classes";
+import { useMemo, useState } from "react";
+
+import type { Player, GameItem } from "../../../types";
+import { ItemCategory, Direction } from "../../../types";
 
 import HeartIcon from "../../../assets/heart.svg?react";
 import DieIcon from "../../../assets/die.svg?react";
 import PotionIcon from "../../../assets/potion.svg?react";
+import RockIcon from "../../../assets/rock.svg?react";
 
 import { usePlayersStore, useBoardStore, useGameStore } from "../../../store";
 
-import { ItemCategory } from "../../../types";
-
 export default function PlayerCard({ player }: { player: Player }) {
-  "use no memo";
-
   const { rollDieForPlayer, consumeItem } = usePlayersStore();
-  const { players } = useBoardStore();
+  const { players } = usePlayersStore();
   const { currentPlayerIndex } = useGameStore();
 
-  const renderPotions = () => {
-    const potions = player.inventory.filter(
-      (item) => item.category === ItemCategory.potion,
-    );
+  const [selectedRock, setSelectedRock] = useState<GameItem | null>(null);
 
-    return potions.map((potion) => (
-      <button key={potion.id} onClick={() => consumeItem({ player, item: potion })}>
-        <PotionIcon width="25" height="25" className="inline" />
-      </button>
-    ));
-  };
+  const potionItems = useMemo(
+    () =>
+      player.inventory.filter((item) => item.category === ItemCategory.potion),
+    [player.inventory],
+  );
+
+  const rockItems = useMemo(
+    () =>
+      player.inventory.filter((item) => item.category === ItemCategory.rock),
+    [player.inventory],
+  );
+
+  function throwRock(direction: Direction) {
+    if (!selectedRock) return;
+    consumeItem({ item: selectedRock, player, direction });
+    setSelectedRock(null);
+  }
 
   return (
     <div>
@@ -36,7 +44,7 @@ export default function PlayerCard({ player }: { player: Player }) {
         <div>
           <span className="mr-2">{player.name}</span>
           {Array.from({ length: player.healthPoints }, (_, i) => (
-            <HeartIcon key={i} width="25" height="25" className="inline" />
+            <HeartIcon key={i} width="24" height="24" className="inline" />
           ))}
         </div>
 
@@ -44,8 +52,8 @@ export default function PlayerCard({ player }: { player: Player }) {
           className=""
           disabled={player !== players[currentPlayerIndex]}
           onClick={() => rollDieForPlayer(players[currentPlayerIndex])}
-          width="25"
-          height="25"
+          width="24"
+          height="24"
         />
 
         <span>Die: {player.die || "Roll it"}</span>
@@ -53,7 +61,48 @@ export default function PlayerCard({ player }: { player: Player }) {
         <div>
           <h5>Inventory</h5>
           {!player.inventory.length && <p>No items</p>}
-          <div>{renderPotions()}</div>
+
+          {potionItems.length > 0 ? (
+            <div>
+              {potionItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => consumeItem({ item, player })}
+                  title="potion"
+                >
+                  <PotionIcon width="24" height="24" />
+                </button>
+              ))}
+            </div>
+          ) : null}
+
+          {rockItems.length > 0 ? (
+            <div>
+              {rockItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() =>
+                    setSelectedRock(selectedRock?.id === item.id ? null : item)
+                  }
+                  title="rock"
+                >
+                  <RockIcon width="24" height="24" />
+                </button>
+              ))}
+            </div>
+          ) : null}
+
+          {selectedRock && (
+            <div>
+              <p>Throw {selectedRock.name}:</p>
+              <div>
+                <button onClick={() => throwRock(Direction.up)}>↑</button>
+                <button onClick={() => throwRock(Direction.down)}>↓</button>
+                <button onClick={() => throwRock(Direction.left)}>←</button>
+                <button onClick={() => throwRock(Direction.right)}>→</button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

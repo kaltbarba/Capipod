@@ -4,16 +4,21 @@ import logStore from "../logStore";
 import boardStore from "../boardStore";
 import gameStore from "../gameStore";
 
+import * as LogEntry from "../../utils/logEntry";
+
 import {
   Direction,
   TurnStage,
-  type Coordinate,
-  type Effect,
   EffectType,
   Trigger,
+  type Coordinate,
+  type CoordinateKey,
+  type Player,
+  type GameItem,
+  type EffectHandler,
+  type EffectContext,
+  type EffectResult,
 } from "../../types";
-import type { Player, GameItem } from "../../classes";
-import LogEntry from "../../classes/LogEntry";
 
 type ConsumeItemParams = {
   player: Player;
@@ -22,9 +27,22 @@ type ConsumeItemParams = {
 };
 
 interface PlayerState {
+  players: Player[];
+  setPlayers: (players: Player[]) => void;
+  playersMap: Map<CoordinateKey, Player>;
+
   rollDieForPlayer: (player: Player) => void;
   movePlayer: (player: Player, direction: Direction) => void;
   consumeItem: (params: ConsumeItemParams) => void;
+}
+
+function getNextCoordinate(player: Player, direction: Direction): Coordinate {
+  return {
+    [Direction.up]: { x: player.coordinate.x, y: player.coordinate.y - 1 },
+    [Direction.down]: { x: player.coordinate.x, y: player.coordinate.y + 1 },
+    [Direction.left]: { x: player.coordinate.x - 1, y: player.coordinate.y },
+    [Direction.right]: { x: player.coordinate.x + 1, y: player.coordinate.y },
+  }[direction];
 }
 
 function isMovingAllowed({
@@ -52,95 +70,121 @@ function isMovingAllowed({
   return true;
 }
 
-function applyItemEffect({
-  effect,
-  player,
-}: {
-  effect: Effect;
-  player: Player;
-}): void {
-  switch (effect.type) {
-    case EffectType.heal:
-      player.heal(effect.amount);
-      logStore.getState().addLog(
-        LogEntry.playerHealed({
-          amount: effect.amount,
-          playerName: player.name,
-        }),
-      );
-      break;
-    default:
-      break;
-  }
+const effectHandler: EffectHandler = {
+  [EffectType.heal]: ({ player, effect }) => {
+    return {
+      playerUpdate: { healthPoints: player.healthPoints + effect.amount },
+      log: LogEntry.playerHealed({
+        amount: effect.amount,
+        playerName: player.name,
+      }),
+    };
+  },
+  [EffectType.activatePod]: ({ player, direction }) => {
+    if (!direction) return {};
+
+    const nextCoordinate = getNextCoordinate(player, direction);
+    const coordinateKey: CoordinateKey = `${nextCoordinate.x},${nextCoordinate.y}`;
+    return { boardUpdate: { activatePod: coordinateKey } };
+  },
+};
+
+function replacePlayer(players: Player[], updatedPlayer: Player): Player[] {
+  return players.map((p) => (p.id === updatedPlayer.id ? updatedPlayer : p));
 }
 
-const usePlayersStore = create<PlayerState>(() => ({
-  consumeItem: (params) => {
-    console.log("consumiinnnng", params);
-    const boardState = boardStore.getState();
-    const { player, item } = params;
+const usePlayersStore = create<PlayerState>((set, get) => ({
+  players: [],
+  playersMap: new Map(),
+  setPlayers: (players) => {
+    const playersMap = new Map<CoordinateKey, Player>(
+      players.map((player) => [
+        `${player.coordinate.x},${player.coordinate.y}`,
+        player,
+      ]),
+    );
+    set({ players, playersMap });
+  },
 
-    applyItemEffect({ player, effect: item.effect });
-    player.removeFromInventory(item);
-    boardState.setPlayers([...boardState.players]);
+  consumeItem: ({ player, item, direction }) => {
+    const handler = effectHandler[item.effect.type] as (
+      ctx: EffectContext,
+    ) => EffectResult;
+    const effectResult = handler({
+      effect: item.effect,
+      player,
+      direction,
+    });
+
+    const updatedPlayer: Player = {
+      ...player,
+      ...effectResult.playerUpdate,
+      inventory: player.inventory.filter((i) => i.id !== item.id),
+    };
+
+    if (effectResult.log) logStore.getState().addLog(effectResult.log);
+
+    if (effectResult.boardUpdate?.activatePod) {
+      const boardState = boardStore.getState();
+      const pod = boardState.podsMap.get(effectResult.boardUpdate.activatePod);
+      if (pod) {
+        boardState.activatePod(effectResult.boardUpdate.activatePod);
+        logStore
+          .getState()
+          .addLog(LogEntry.podActivated(player.name, pod.name));
+      }
+    }
+
+    // gotta use get().setplayers instead of set(players) directly cuz there the map gets updated and my components are consuming it
+    get().setPlayers(replacePlayer(get().players, updatedPlayer));
   },
 
   rollDieForPlayer: (player) => {
-    player.rollDie();
-    boardStore.getState().setPlayers([...boardStore.getState().players]);
+    const die = Math.floor(Math.random() * 6) + 1;
+    const updatedPlayer: Player = { ...player, die, stepsRemaining: die };
+
+    get().setPlayers(replacePlayer(get().players, updatedPlayer));
     gameStore.getState().setStage(TurnStage.moving);
-    logStore.getState().addLog(
-      LogEntry.playerRolledDie({
-        playerName: player.name,
-        dieValue: player.die,
-      }),
-    );
+    logStore
+      .getState()
+      .addLog(
+        LogEntry.playerRolledDie({ playerName: player.name, dieValue: die }),
+      );
   },
 
   movePlayer: (player, direction) => {
-    const nextCoordinate = player.nextCoordinate(direction);
+    const nextCoordinate = getNextCoordinate(player, direction);
 
-    // validate movement
     if (!isMovingAllowed({ player, nextCoordinate })) return;
 
-    // MOVEMENT LOGIC TO NEXT COORDINATE
     const boardState = boardStore.getState();
     const logState = logStore.getState();
     const gameState = gameStore.getState();
 
-    switch (direction) {
-      case Direction.up:
-        player.moveUp();
-        break;
-      case Direction.down:
-        player.moveDown();
-        break;
-      case Direction.left:
-        player.moveLeft();
-        break;
-      case Direction.right:
-        player.moveRight();
-        break;
-    }
+    let updatedPlayer: Player = {
+      ...player,
+      coordinate: nextCoordinate,
+      stepsRemaining: player.stepsRemaining - 1,
+    };
 
     logState.addLog(
       LogEntry.playerMoved({
         playerName: player.name,
-        coordinate: player.coordinate,
+        coordinate: nextCoordinate,
         direction,
       }),
     );
 
-    // VERIFIES PODS ON NEW LOCATION = current player location after moving them
     const podAtCoordinate = boardState.podsMap.get(
-      `${player.coordinate.x},${player.coordinate.y}`,
+      `${nextCoordinate.x},${nextCoordinate.y}`,
     );
 
     if (podAtCoordinate) {
-      player.registerPodDamage(podAtCoordinate);
-
+      updatedPlayer = {
+        ...updatedPlayer,
+        healthPoints: updatedPlayer.healthPoints - podAtCoordinate.damage,
+      };
       logState.addLog(LogEntry.podActivated(player.name, podAtCoordinate.name));
-
       logState.addLog(
         LogEntry.podDamagedPlayer({
           playerName: player.name,
@@ -150,15 +194,17 @@ const usePlayersStore = create<PlayerState>(() => ({
       );
     }
 
-    // VERIFIERS ITEM ON NEW LOCATION
     const itemAtCoordinate = boardState.itemsMap.get(
-      `${player.coordinate.x},${player.coordinate.y}`,
+      `${nextCoordinate.x},${nextCoordinate.y}`,
     );
 
     if (itemAtCoordinate) {
       switch (itemAtCoordinate.trigger) {
         case Trigger.pickup:
-          player.addToInventory(itemAtCoordinate);
+          updatedPlayer = {
+            ...updatedPlayer,
+            inventory: [...updatedPlayer.inventory, itemAtCoordinate],
+          };
           logState.addLog(
             LogEntry.itemPickedUp({
               playerName: player.name,
@@ -174,11 +220,11 @@ const usePlayersStore = create<PlayerState>(() => ({
       }
     }
 
-    boardState.setPlayers([...boardState.players]);
+    get().setPlayers(replacePlayer(get().players, updatedPlayer));
 
     if (
-      boardState.shelterCoordinate.x === player.coordinate.x &&
-      boardState.shelterCoordinate.y === player.coordinate.y
+      boardState.shelterCoordinate.x === nextCoordinate.x &&
+      boardState.shelterCoordinate.y === nextCoordinate.y
     ) {
       gameState.finish();
       logState.addLog(
@@ -187,8 +233,8 @@ const usePlayersStore = create<PlayerState>(() => ({
       return;
     }
 
-    if (!player.stepsRemaining) {
-      gameState.nextTurn();
+    if (!updatedPlayer.stepsRemaining) {
+      gameState.nextTurn(get().players.length);
     }
   },
 }));
