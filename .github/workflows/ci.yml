@@ -14,5 +14,5 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
-      - run: npm run lint
+      - run: npm run lint -- --max-warnings 0
       - run: npx tsc --noEmit
