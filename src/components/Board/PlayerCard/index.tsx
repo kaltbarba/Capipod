@@ -50,7 +50,6 @@ export default function PlayerCard({ player }: { player: Player }) {
 
         <DieIcon
           className=""
-          disabled={player !== players[currentPlayerIndex]}
           onClick={() => rollDieForPlayer(players[currentPlayerIndex])}
           width="24"
           height="24"
