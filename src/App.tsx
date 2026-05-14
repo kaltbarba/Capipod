@@ -39,7 +39,7 @@ function App() {
     setBuildings(BuildingsData);
     setPods(PodsData);
     setItems(ItemsData);
-  }, []);
+  }, [setPlayers, setBuildings, setPods, setItems]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
