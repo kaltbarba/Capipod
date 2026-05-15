@@ -15,4 +15,5 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run lint -- --max-warnings 0
+      - run: npm run coverage
       - run: npx tsc -b --noEmit

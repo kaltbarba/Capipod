@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import * as LogEntry from "../../utils/logEntry";
+import { logEntry } from "../../utils";
 
 import boardStore from "../boardStore";
 import logStore from "../logStore";
@@ -30,7 +30,7 @@ const useGameStore = create<GameState>((set) => ({
   },
   podsRevealed: false,
   revealPods() {
-    logStore.getState().addLog(LogEntry.allPodsRevealed());
+    logStore.getState().addLog(logEntry.allPodsRevealed());
     set({ podsRevealed: true });
   },
   finishTurn(totalPlayers) {

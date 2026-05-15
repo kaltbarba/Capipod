@@ -4,8 +4,7 @@ import logStore from "../logStore";
 import boardStore from "../boardStore";
 import gameStore from "../gameStore";
 
-import * as LogEntry from "../../utils/logEntry";
-import { getCoordinateKey, getNextCoordinate } from "../../utils";
+import { getCoordinateKey, getNextCoordinate, logEntry } from "../../utils";
 
 import {
   Direction,
@@ -71,7 +70,7 @@ const effectHandler: EffectHandler = {
   [EffectType.heal]: ({ player, effect }) => {
     return {
       playerUpdate: { healthPoints: player.healthPoints + effect.amount },
-      log: LogEntry.playerHealed({
+      log: logEntry.playerHealed({
         amount: effect.amount,
         playerName: player.name,
       }),
@@ -124,7 +123,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
         boardState.activatePod(effectResult.boardUpdate.activatePod);
         logStore
           .getState()
-          .addLog(LogEntry.podActivated(player.name, pod.name));
+          .addLog(logEntry.podActivated(player.name, pod.name));
       }
     }
 
@@ -142,7 +141,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
     logStore
       .getState()
       .addLog(
-        LogEntry.playerRolledDie({ playerName: player.name, dieValue: die }),
+        logEntry.playerRolledDie({ playerName: player.name, dieValue: die }),
       );
   },
 
@@ -163,7 +162,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
     };
 
     logState.addLog(
-      LogEntry.playerMoved({
+      logEntry.playerMoved({
         playerName: player.name,
         coordinate: nextCoordinate,
         direction,
@@ -179,9 +178,9 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
         ...updatedPlayer,
         healthPoints: updatedPlayer.healthPoints - podAtCoordinate.damage,
       };
-      logState.addLog(LogEntry.podActivated(player.name, podAtCoordinate.name));
+      logState.addLog(logEntry.podActivated(player.name, podAtCoordinate.name));
       logState.addLog(
-        LogEntry.podDamagedPlayer({
+        logEntry.podDamagedPlayer({
           playerName: player.name,
           podDamage: podAtCoordinate.damage,
           podName: podAtCoordinate.name,
@@ -199,7 +198,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
             inventory: [...updatedPlayer.inventory, itemAtCoordinate],
           };
           logState.addLog(
-            LogEntry.itemPickedUp({
+            logEntry.itemPickedUp({
               playerName: player.name,
               itemName: itemAtCoordinate.name,
             }),
@@ -219,7 +218,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
     ) {
       gameState.finish();
       logState.addLog(
-        LogEntry.playerReachedShelter({ playerName: player.name }),
+        logEntry.playerReachedShelter({ playerName: player.name }),
       );
       return;
     }
