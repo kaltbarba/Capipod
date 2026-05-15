@@ -20,7 +20,7 @@ export default function LogSection() {
             </div>
           ))
         ) : (
-          <span className="text-gray-400 text-center p-2">No logs</span>
+          <span className="text-gray-400 text-center p-2">No messages</span>
         )}
       </div>
     </section>

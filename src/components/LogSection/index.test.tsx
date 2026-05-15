@@ -10,9 +10,9 @@ describe("<LogSection />", () => {
     useLogStore.setState(initialLogState);
   });
 
-  it("shows no logs if there are no logs", () => {
+  it("shows no messages if there are no logs", () => {
     render(<LogSection />);
-    expect(screen.getByText("No logs")).toBeInTheDocument();
+    expect(screen.getByText("No messages")).toBeInTheDocument();
   });
 
   it("shows log messages", () => {
