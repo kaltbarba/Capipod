@@ -3,3 +3,15 @@
 html, body, #root {
   height: 100%;
 }
+
+@theme {
+  --color-background: rgb(2 15 31);
+  --color-surface: rgb(3 20 36);
+  --color-surface-element: rgb(27 40 57);
+  --color-border: rgb(33 46 63);
+  --color-button-primary: rgb(138 206 255);
+  --color-button-danger: rgb(147 0 10);
+
+  /** MEANT FOR TEXT **/
+  --color-content: rgb(173 186 205);
+}
