@@ -5,12 +5,11 @@ import tailwindcss from "@tailwindcss/vite";
 import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     tailwindcss(),
-
-    babel({ presets: [reactCompilerPreset()] }),
+    ...(mode !== "test" ? [babel({ presets: [reactCompilerPreset()] })] : []),
     svgr(),
   ],
   test: {
@@ -18,7 +17,7 @@ export default defineConfig({
     globals: true,
     setupFiles: "./src/test/setup.ts",
     coverage: {
-      include: ["src/**/*.{ts,tsx}"],
+include: ["src/**/*.{ts,tsx}"],
       exclude: ["src/test/**", "src/data/**", "src/main.tsx"],
       thresholds: {
         lines: 10,
@@ -28,4 +27,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

@@ -1,15 +1,10 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import boardStore from ".";
 import { idlePod, activePod, building, potionItem } from "../../test/fixtures";
 import { getCoordinateKey } from "../../utils";
 import { PodState } from "../../types";
 
 describe("boardStore - buildings", () => {
-  const initialBoardState = boardStore.getState();
-  beforeEach(() => {
-    boardStore.setState(initialBoardState);
-  });
-
   it("setBuildings sets buildingsMap", () => {
     expect(boardStore.getState().buildings.length).toBe(0);
 
@@ -24,11 +19,6 @@ describe("boardStore - buildings", () => {
 });
 
 describe("boardStore - items", () => {
-  const initialState = boardStore.getState();
-  beforeEach(() => {
-    boardStore.setState(initialState);
-  });
-
   it("setItems sets itemsMap", () => {
     expect(
       boardStore
@@ -57,11 +47,6 @@ describe("boardStore - items", () => {
 });
 
 describe("boardStore - pods", () => {
-  const initialState = boardStore.getState();
-  beforeEach(() => {
-    boardStore.setState(initialState);
-  });
-
   it("setPods sets podsMap", () => {
     expect(boardStore.getState().pods.length).toBe(0);
 
