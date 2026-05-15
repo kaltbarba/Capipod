@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Board from "./components/Board";
 import Header from "./components/Header";
 import LogSection from "./components/LogSection";
-import DieIcon from "./assets/die.svg?react";
+import TurnSection from "./components/TurnSection";
 
 import PodsData from "./data/pods";
 import BuildingsData from "./data/buildings";
@@ -16,9 +16,7 @@ import "./App.scss";
 
 function App() {
   const { setBuildings, setPods, size, setItems } = useBoardStore();
-  const { players, setPlayers, rollDieForPlayer } = usePlayersStore();
-
-  const { stage, revealPods, finishTurn, currentPlayerIndex } = useGameStore();
+  const { setPlayers } = usePlayersStore();
 
   useEffect(() => {
     setPlayers([
@@ -87,31 +85,7 @@ function App() {
         <Board size={size} className={"overflow-auto"} />
 
         <div className="h-full flex flex-col">
-          <div className="border-2 border-border bg-surface flex flex-col justify-center items-center p-8">
-            <h2 className="text-content font-bold mb-8">Game state: {stage}</h2>
-            <DieIcon className="w-30 mb-8" />
-            <button
-              className="text-xl bg-button-primary font-semibold border-border px-8 py-4 rounded cursor-pointer w-full mb-4"
-              onClick={() => rollDieForPlayer(players[currentPlayerIndex])}
-            >
-              Roll die
-            </button>
-
-            <button
-              className="text-xl bg-button-danger font-semibold border-border px-8 py-4 rounded cursor-pointer w-full"
-              onClick={() => finishTurn(players.length)}
-            >
-              Finish turn
-            </button>
-
-            <button
-              className="text-xl bg-gray-50 font-semibold border-border px-8 py-4 rounded cursor-pointer w-full"
-              onClick={revealPods}
-            >
-              Reveal all pods
-            </button>
-          </div>
-
+          <TurnSection />
           <LogSection />
         </div>
       </div>

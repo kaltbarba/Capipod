@@ -5,11 +5,6 @@ import { useLogStore } from "../../store";
 import { logEntry } from "../../test/fixtures";
 
 describe("<LogSection />", () => {
-  const initialLogState = useLogStore.getState();
-  beforeEach(() => {
-    useLogStore.setState(initialLogState);
-  });
-
   it("shows no messages if there are no logs", () => {
     render(<LogSection />);
     expect(screen.getByText("No messages")).toBeInTheDocument();

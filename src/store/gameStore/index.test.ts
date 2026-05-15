@@ -1,16 +1,8 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import gameStore from ".";
-import logStore from "../logStore";
 import { TurnStage } from "../../types";
 
 describe("gameStore", () => {
-  const initialGameState = gameStore.getState();
-  const initialLogStore = logStore.getState();
-  beforeEach(() => {
-    gameStore.setState(initialGameState);
-    logStore.setState(initialLogStore);
-  });
-
   it("finish sets stage to end", () => {
     expect(gameStore.getState().stage).toBe(TurnStage.start);
 
@@ -21,11 +13,14 @@ describe("gameStore", () => {
     expect(gameStore.getState().stage).toBe(TurnStage.end);
   });
 
-  it("finishTurn sets game stage to start and move to next player index", () => {
+  it("nextPlayer move index to the second player and back to first one", () => {
     expect(gameStore.getState().currentPlayerIndex).toBe(0);
-    gameStore.getState().finishTurn(4);
-    expect(gameStore.getState().stage).toBe(TurnStage.start);
+
+    gameStore.getState().nextPlayer(2);
     expect(gameStore.getState().currentPlayerIndex).toBe(1);
+
+    gameStore.getState().nextPlayer(2);
+    expect(gameStore.getState().currentPlayerIndex).toBe(0);
   });
 
   it("revealPods sets podsRevealed to true", () => {

@@ -39,6 +39,8 @@ interface PlayerState {
 
   selectedItem: GameItem | null;
   setSelectedItem: (item: GameItem | null) => void;
+
+  finishPlayerTurn: (player: Player) => void;
 }
 
 function isMovingAllowed({
@@ -226,6 +228,17 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
   selectedItem: null,
   setSelectedItem: (selectedItem) => {
     set({ selectedItem });
+  },
+  finishPlayerTurn(player) {
+    boardStore.getState().tickPods();
+    gameStore.getState().setStage(TurnStage.start);
+
+    const updatedPlayer: Player = { ...player, die: 0, stepsRemaining: 0 };
+    set((state) => ({
+      players: replacePlayer(state.players, updatedPlayer),
+    }));
+
+    gameStore.getState().nextPlayer(get().players.length);
   },
 }));
 

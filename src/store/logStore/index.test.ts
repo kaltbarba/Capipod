@@ -3,11 +3,6 @@ import logStore from ".";
 import { logEntry } from "../../test/fixtures";
 
 describe("logStore", () => {
-  const initialLogStore = logStore.getState();
-  beforeEach(() => {
-    logStore.setState(initialLogStore);
-  });
-
   it("logs", () => {
     expect(logStore.getState().logs.length).toBe(0);
     logStore.getState().addLog(logEntry);
