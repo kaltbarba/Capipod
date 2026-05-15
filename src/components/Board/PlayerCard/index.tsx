@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-import type { Player, GameItem } from "../../../types";
+import type { Player } from "../../../types";
 import { ItemCategory, Direction } from "../../../types";
 
 import HeartIcon from "../../../assets/heart.svg?react";
