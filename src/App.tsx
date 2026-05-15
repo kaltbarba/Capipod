@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Board from "./components/Board";
-import PlayerCard from "./components/Board/PlayerCard";
+import Header from "./components/Header";
+import DieIcon from "./assets/die.svg?react";
 
 import PodsData from "./data/pods";
 import BuildingsData from "./data/buildings";
@@ -19,9 +20,9 @@ import "./App.scss";
 
 function App() {
   const { setBuildings, setPods, size, setItems } = useBoardStore();
-  const { players, setPlayers } = usePlayersStore();
+  const { players, setPlayers, rollDieForPlayer } = usePlayersStore();
   const { logs } = useLogStore();
-  const { stage, revealPods, finishTurn } = useGameStore();
+  const { stage, revealPods, finishTurn, currentPlayerIndex } = useGameStore();
 
   useEffect(() => {
     setPlayers([
@@ -39,7 +40,7 @@ function App() {
         name: "Andres",
         healthPoints: 5,
         inventory: [],
-        coordinate: { x: 0, y: 0 },
+        coordinate: { x: 25, y: 0 },
         die: 0,
         stepsRemaining: 0,
       },
@@ -83,42 +84,52 @@ function App() {
   }, []);
 
   return (
-    <div className="h-screen w-screen grid grid-cols-[3fr_1fr] overflow-hidden">
-      <Board size={size} className={"overflow-auto"} />
+    <div className="h-screen w-screen grid grid-cols-[1fr]  bg-background">
+      <Header />
 
-      <div className="h-full flex flex-col">
-        <div>
-          <h5>Game state</h5>
-          <div>{stage}</div>
-        </div>
+      <div className="grid grid-cols-[3fr_1fr] mt-2">
+        <Board size={size} className={"overflow-auto"} />
 
-        <div className="bg-red-300 ">
-          {players.map((player) => (
-            <PlayerCard key={player.name} player={player} />
-          ))}
-        </div>
+        <div className="h-full flex flex-col">
+          <div className="border-2 border-border bg-surface flex flex-col justify-center items-center p-8">
+            <h2 className="text-content font-bold mb-8">Game state: {stage}</h2>
+            <DieIcon className="w-30 mb-8" />
+            <button
+              className="text-xl bg-button-primary font-semibold border-border px-8 py-4 rounded cursor-pointer w-full mb-4"
+              onClick={() => rollDieForPlayer(players[currentPlayerIndex])}
+            >
+              Roll die
+            </button>
 
-        <div className="max-h-48 overflow-y-auto">
-          <h5>Game Log</h5>
-          <div className="log-entries">
-            {logs.map((log, index) => (
-              <div key={index} className="log-entry">
-                <span className="timestamp mr-2">
-                  {log.timestamp.toLocaleTimeString()}:
-                </span>
-                <span className="message">{log.message}</span>
-              </div>
-            ))}
+            <button
+              className="text-xl bg-button-danger font-semibold border-border px-8 py-4 rounded cursor-pointer w-full"
+              onClick={() => finishTurn(players.length)}
+            >
+              Finish turn
+            </button>
+
+            <button
+              className="text-xl bg-gray-50 font-semibold border-border px-8 py-4 rounded cursor-pointer w-full"
+              onClick={revealPods}
+            >
+              Reveal all pods
+            </button>
+          </div>
+
+          <div className="h-full overflow-y-auto bg-gray-50">
+            <h5>Game Log</h5>
+            <div className="log-entries">
+              {logs.map((log, index) => (
+                <div key={index} className="log-entry">
+                  <span className="timestamp mr-2">
+                    {log.timestamp.toLocaleTimeString()}:
+                  </span>
+                  <span className="message">{log.message}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-
-        <button className="button" onClick={() => finishTurn(players.length)}>
-          Finish turn
-        </button>
-
-        <button className="button" onClick={revealPods}>
-          Reveal all pods
-        </button>
       </div>
     </div>
   );
