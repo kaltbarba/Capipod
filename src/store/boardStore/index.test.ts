@@ -5,9 +5,9 @@ import { getCoordinateKey } from "../../utils";
 import { PodState } from "../../types";
 
 describe("boardStore - buildings", () => {
-  const initialState = boardStore.getState();
+  const initialBoardState = boardStore.getState();
   beforeEach(() => {
-    boardStore.setState(initialState);
+    boardStore.setState(initialBoardState);
   });
 
   it("setBuildings sets buildingsMap", () => {

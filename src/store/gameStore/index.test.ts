@@ -1,11 +1,14 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import gameStore from ".";
+import logStore from "../logStore";
 import { TurnStage } from "../../types";
 
 describe("gameStore", () => {
-  const initialState = gameStore.getState();
+  const initialGameState = gameStore.getState();
+  const initialLogStore = logStore.getState();
   beforeEach(() => {
-    gameStore.setState(initialState);
+    gameStore.setState(initialGameState);
+    logStore.setState(initialLogStore);
   });
 
   it("finish sets stage to end", () => {

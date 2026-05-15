@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Board from "./components/Board";
 import Header from "./components/Header";
+import LogSection from "./components/LogSection";
 import DieIcon from "./assets/die.svg?react";
 
 import PodsData from "./data/pods";
@@ -9,19 +10,14 @@ import ItemsData from "./data/items";
 
 import { Direction } from "./types";
 
-import {
-  usePlayersStore,
-  useLogStore,
-  useBoardStore,
-  useGameStore,
-} from "./store";
+import { usePlayersStore, useBoardStore, useGameStore } from "./store";
 
 import "./App.scss";
 
 function App() {
   const { setBuildings, setPods, size, setItems } = useBoardStore();
   const { players, setPlayers, rollDieForPlayer } = usePlayersStore();
-  const { logs } = useLogStore();
+
   const { stage, revealPods, finishTurn, currentPlayerIndex } = useGameStore();
 
   useEffect(() => {
@@ -116,19 +112,7 @@ function App() {
             </button>
           </div>
 
-          <div className="h-full overflow-y-auto bg-gray-50">
-            <h5>Game Log</h5>
-            <div className="log-entries">
-              {logs.map((log, index) => (
-                <div key={index} className="log-entry">
-                  <span className="timestamp mr-2">
-                    {log.timestamp.toLocaleTimeString()}:
-                  </span>
-                  <span className="message">{log.message}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <LogSection />
         </div>
       </div>
     </div>

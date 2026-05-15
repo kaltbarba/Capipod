@@ -12,7 +12,7 @@ export default function Header() {
       </div>
       <div
         style={{ gridTemplateColumns: `repeat(${players.length}, auto)` }}
-        className="grid gap-x-4 h-full items-center o"
+        className="grid gap-x-4 h-full items-center"
       >
         {players.map((player) => (
           <PlayerCard key={player.name} player={player} />

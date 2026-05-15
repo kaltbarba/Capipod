@@ -2,19 +2,22 @@ import { describe, it, expect, beforeEach } from "vitest";
 import playerStore from ".";
 import boardStore from "../boardStore";
 import gameStore from "../gameStore";
+import logStore from "../logStore";
 import { player, potionItem, rockItem, idlePod } from "../../test/fixtures";
 import { getCoordinateKey } from "../../utils";
 import { TurnStage, Direction } from "../../types";
 
 describe("playerStore", () => {
-  const initialState = playerStore.getState();
+  const initialPlayerState = playerStore.getState();
   const initialBoardState = boardStore.getState();
   const initialGameState = gameStore.getState();
+  const initialLogState = logStore.getState();
 
   beforeEach(() => {
-    playerStore.setState(initialState);
+    playerStore.setState(initialPlayerState);
     boardStore.setState(initialBoardState);
     gameStore.setState(initialGameState);
+    logStore.setState(initialLogState);
   });
 
   it("setPlayers sets players and playersMap", () => {
