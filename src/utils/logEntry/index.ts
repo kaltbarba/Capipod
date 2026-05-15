@@ -1,4 +1,4 @@
-import type { Coordinate, LogEntry } from "../types";
+import type { Coordinate, LogEntry } from "../../types";
 
 function createLogEntry(message: string): LogEntry {
   return { timestamp: new Date(), message };

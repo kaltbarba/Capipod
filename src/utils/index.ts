@@ -1,8 +1,7 @@
 import type { Coordinate, CoordinateKey } from "../types";
 import { Direction } from "../types";
 
-export const getCoordinateKey = (coordinate: Coordinate): CoordinateKey =>
-  `${coordinate.x},${coordinate.y}`;
+export * as logEntry from "./logEntry";
 
 export const getNextCoordinate = (
   coordinate: Coordinate,
@@ -16,3 +15,6 @@ export const getNextCoordinate = (
     [Direction.right]: { x: coordinate.x + 1 * steps, y: coordinate.y },
   }[direction];
 };
+
+export const getCoordinateKey = (coordinate: Coordinate): CoordinateKey =>
+  `${coordinate.x},${coordinate.y}`;
