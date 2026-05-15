@@ -12,10 +12,8 @@ import { usePlayersStore, useGameStore } from "../../../store";
 
 export default function PlayerCard({ player }: { player: Player }) {
   const { rollDieForPlayer, consumeItem } = usePlayersStore();
-  const { players } = usePlayersStore();
+  const { players, selectedItem, setSelectedItem } = usePlayersStore();
   const { currentPlayerIndex } = useGameStore();
-
-  const [selectedRock, setSelectedRock] = useState<GameItem | null>(null);
 
   const potionItems = useMemo(
     () =>
@@ -30,9 +28,9 @@ export default function PlayerCard({ player }: { player: Player }) {
   );
 
   function throwRock(direction: Direction) {
-    if (!selectedRock) return;
-    consumeItem({ item: selectedRock, player, direction });
-    setSelectedRock(null);
+    if (!selectedItem) return;
+    consumeItem({ item: selectedItem, player, direction });
+    setSelectedItem(null);
   }
 
   return (
@@ -81,7 +79,7 @@ export default function PlayerCard({ player }: { player: Player }) {
                 <button
                   key={item.id}
                   onClick={() =>
-                    setSelectedRock(selectedRock?.id === item.id ? null : item)
+                    setSelectedItem(selectedItem?.id === item.id ? null : item)
                   }
                   title="rock"
                 >
@@ -91,9 +89,9 @@ export default function PlayerCard({ player }: { player: Player }) {
             </div>
           ) : null}
 
-          {selectedRock && (
+          {selectedItem && (
             <div>
-              <p>Throw {selectedRock.name}:</p>
+              <p>Throw {selectedItem.name}:</p>
               <div>
                 <button onClick={() => throwRock(Direction.up)}>↑</button>
                 <button onClick={() => throwRock(Direction.down)}>↓</button>

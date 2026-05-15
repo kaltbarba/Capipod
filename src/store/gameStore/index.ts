@@ -11,22 +11,15 @@ interface GameState {
   currentPlayerIndex: number;
   stage: TurnStage;
   setStage: (stage: TurnStage) => void;
-  nextTurn: (totalPlayers: number) => void;
   finish: () => void;
   podsRevealed: boolean;
   revealPods: () => void;
+  finishTurn: (totalPlayers: number) => void;
 }
 
 const useGameStore = create<GameState>((set) => ({
   currentPlayerIndex: 0,
   stage: TurnStage.start,
-  nextTurn: (totalPlayers) => {
-    boardStore.getState().tickPods();
-    set((state) => ({
-      stage: TurnStage.start,
-      currentPlayerIndex: (state.currentPlayerIndex + 1) % totalPlayers,
-    }));
-  },
   setStage: (stage) => set({ stage }),
   finish: () => {
     set({
@@ -39,6 +32,13 @@ const useGameStore = create<GameState>((set) => ({
   revealPods() {
     logStore.getState().addLog(LogEntry.allPodsRevealed());
     set({ podsRevealed: true });
+  },
+  finishTurn(totalPlayers) {
+    boardStore.getState().tickPods();
+    set((state) => ({
+      stage: TurnStage.start,
+      currentPlayerIndex: (state.currentPlayerIndex + 1) % totalPlayers,
+    }));
   },
 }));
 

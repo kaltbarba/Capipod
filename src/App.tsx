@@ -15,19 +15,28 @@ import {
   useGameStore,
 } from "./store";
 
-import "./App.css";
+import "./App.scss";
 
 function App() {
   const { setBuildings, setPods, size, setItems } = useBoardStore();
   const { players, setPlayers } = usePlayersStore();
   const { logs } = useLogStore();
-  const { stage, revealPods } = useGameStore();
+  const { stage, revealPods, finishTurn } = useGameStore();
 
   useEffect(() => {
     setPlayers([
       {
         id: "player-1",
         name: "Kenny",
+        healthPoints: 5,
+        inventory: [],
+        coordinate: { x: 0, y: 0 },
+        die: 0,
+        stepsRemaining: 0,
+      },
+      {
+        id: "player-2",
+        name: "Andres",
         healthPoints: 5,
         inventory: [],
         coordinate: { x: 0, y: 0 },
@@ -74,22 +83,22 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <Board size={size} />
+    <div className="h-screen w-screen grid grid-cols-[3fr_1fr] overflow-hidden">
+      <Board size={size} className={"overflow-auto"} />
 
-      <div>
+      <div className="h-full flex flex-col">
         <div>
           <h5>Game state</h5>
           <div>{stage}</div>
         </div>
 
-        <div className="player-info">
+        <div className="bg-red-300 ">
           {players.map((player) => (
             <PlayerCard key={player.name} player={player} />
           ))}
         </div>
 
-        <div className="log-container">
+        <div className="max-h-48 overflow-y-auto">
           <h5>Game Log</h5>
           <div className="log-entries">
             {logs.map((log, index) => (
@@ -102,6 +111,10 @@ function App() {
             ))}
           </div>
         </div>
+
+        <button className="button" onClick={() => finishTurn(players.length)}>
+          Finish turn
+        </button>
 
         <button className="button" onClick={revealPods}>
           Reveal all pods

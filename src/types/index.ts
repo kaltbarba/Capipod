@@ -49,7 +49,7 @@ export const EffectType: StringEnum<EffectType> = {
 
 export type Effect =
   | { type: typeof EffectType.heal; amount: number }
-  | { type: typeof EffectType.activatePod };
+  | { type: typeof EffectType.activatePod; range: number };
 
 export type LogEntry = {
   timestamp: Date;
@@ -93,6 +93,7 @@ export type EffectContext = {
   effect: Effect;
   player: Player;
   direction?: Direction;
+  coordinate?: Coordinate;
 };
 
 export type EffectResult = {
@@ -108,5 +109,6 @@ export type EffectHandler = {
     effect: Extract<Effect, { type: k }>;
     player: Player;
     direction?: Direction;
+    coordinate?: Coordinate;
   }) => EffectResult;
 };

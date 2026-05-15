@@ -5,7 +5,7 @@ import boardStore from "../boardStore";
 import gameStore from "../gameStore";
 
 import * as LogEntry from "../../utils/logEntry";
-import { getCoordinateKey } from "../../utils";
+import { getCoordinateKey, getNextCoordinate } from "../../utils";
 
 import {
   Direction,
@@ -26,6 +26,7 @@ type ConsumeItemParams = {
   player: Player;
   item: GameItem;
   direction?: Direction;
+  coordinate?: Coordinate;
 };
 
 interface PlayerState {
@@ -36,15 +37,9 @@ interface PlayerState {
   rollDieForPlayer: (player: Player) => void;
   movePlayer: (player: Player, direction: Direction) => void;
   consumeItem: (params: ConsumeItemParams) => void;
-}
 
-function getNextCoordinate(player: Player, direction: Direction): Coordinate {
-  return {
-    [Direction.up]: { x: player.coordinate.x, y: player.coordinate.y - 1 },
-    [Direction.down]: { x: player.coordinate.x, y: player.coordinate.y + 1 },
-    [Direction.left]: { x: player.coordinate.x - 1, y: player.coordinate.y },
-    [Direction.right]: { x: player.coordinate.x + 1, y: player.coordinate.y },
-  }[direction];
+  selectedItem: GameItem | null;
+  setSelectedItem: (item: GameItem | null) => void;
 }
 
 function isMovingAllowed({
@@ -82,11 +77,10 @@ const effectHandler: EffectHandler = {
       }),
     };
   },
-  [EffectType.activatePod]: ({ player, direction }) => {
-    if (!direction) return {};
+  [EffectType.activatePod]: ({ coordinate }) => {
+    if (!coordinate) return {};
 
-    const nextCoordinate = getNextCoordinate(player, direction);
-    return { boardUpdate: { activatePod: getCoordinateKey(nextCoordinate) } };
+    return { boardUpdate: { activatePod: getCoordinateKey(coordinate) } };
   },
 };
 
@@ -104,7 +98,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
     set({ players, playersMap });
   },
 
-  consumeItem: ({ player, item, direction }) => {
+  consumeItem: ({ player, item, direction, coordinate }) => {
     const handler = effectHandler[item.effect.type] as (
       ctx: EffectContext,
     ) => EffectResult;
@@ -112,6 +106,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
       effect: item.effect,
       player,
       direction,
+      coordinate,
     });
 
     const updatedPlayer: Player = {
@@ -135,6 +130,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
 
     // gotta use get().setplayers instead of set(players) directly cuz there the map gets updated and my components are consuming it
     get().setPlayers(replacePlayer(get().players, updatedPlayer));
+    set({ selectedItem: null });
   },
 
   rollDieForPlayer: (player) => {
@@ -151,7 +147,7 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
   },
 
   movePlayer: (player, direction) => {
-    const nextCoordinate = getNextCoordinate(player, direction);
+    const nextCoordinate = getNextCoordinate(player.coordinate, direction);
     const nextCoordinateKey = getCoordinateKey(nextCoordinate);
 
     if (!isMovingAllowed({ player, nextCoordinate })) return;
@@ -227,10 +223,10 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
       );
       return;
     }
-
-    if (!updatedPlayer.stepsRemaining) {
-      gameState.nextTurn(get().players.length);
-    }
+  },
+  selectedItem: null,
+  setSelectedItem: (selectedItem) => {
+    set({ selectedItem });
   },
 }));
 
