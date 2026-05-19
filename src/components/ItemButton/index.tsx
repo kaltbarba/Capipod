@@ -1,17 +1,15 @@
-import { type GameItem } from "../../types";
+import type { FC, SVGProps } from "react";
 
 export default function ItemButton({
-  item,
   quantity,
   disabled,
   onClick,
   iconComponent,
 }: {
-  item: GameItem;
   quantity: number;
   disabled: boolean;
   onClick: () => void;
-  iconComponent: any;
+  iconComponent: FC<SVGProps<SVGSVGElement>>;
 }) {
   const Icon = iconComponent;
   return (

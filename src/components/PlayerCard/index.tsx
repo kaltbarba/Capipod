@@ -67,7 +67,6 @@ export default function PlayerCard({ player }: { player: Player }) {
 
       <div className="flex flex-row">
         <ItemButton
-          item={potionItems[potionItems.length - 1]}
           quantity={potionItems.length}
           iconComponent={PotionIcon}
           disabled={Boolean(winner || !isPlayerTurn)}
@@ -78,7 +77,6 @@ export default function PlayerCard({ player }: { player: Player }) {
         />
 
         <ItemButton
-          item={rockItems[rockItems.length - 1]}
           quantity={rockItems.length}
           iconComponent={RockIcon}
           disabled={Boolean(winner || !isPlayerTurn)}
@@ -88,7 +86,6 @@ export default function PlayerCard({ player }: { player: Player }) {
         />
 
         <ItemButton
-          item={holoItems[holoItems.length - 1]}
           quantity={holoItems.length}
           iconComponent={HoloIcon}
           disabled={Boolean(winner || !isPlayerTurn)}
