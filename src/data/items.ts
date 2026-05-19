@@ -90,6 +90,14 @@ const ItemsData: GameItem[] = [
     effect: { type: EffectType.activatePod, range: 2 },
     coordinate: { x: 17, y: 28 },
   },
+  {
+    id: "holo-0",
+    name: "Holo Card",
+    category: ItemCategory.holo,
+    trigger: Trigger.pickup,
+    effect: { type: EffectType.revealPods },
+    coordinate: { x: 3, y: 0 },
+  },
 ];
 
 export default ItemsData;

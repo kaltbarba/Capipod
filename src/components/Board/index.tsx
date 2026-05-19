@@ -16,6 +16,7 @@ import PlayerIcon from "../../assets/player.svg?react";
 import ShelterIcon from "../../assets/shelter.svg?react";
 import PotionIcon from "../../assets/potion.svg?react";
 import RockIcon from "../../assets/rock.svg?react";
+import HoloIcon from "../../assets/holo.svg?react";
 
 import "./index.scss";
 
@@ -137,6 +138,8 @@ export default function Board({
                   <PotionIcon width={24} height={24} />
                 ) : item.category === ItemCategory.rock ? (
                   <RockIcon width={24} height={24} />
+                ) : item.category === ItemCategory.holo ? (
+                  <HoloIcon width={24} height={24} />
                 ) : null
               ) : null}
 

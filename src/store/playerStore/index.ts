@@ -83,6 +83,10 @@ const effectHandler: EffectHandler = {
 
     return { boardUpdate: { activatePod: getCoordinateKey(coordinate) } };
   },
+  [EffectType.revealPods]: () => {
+    gameStore.getState().revealPods();
+    return { log: logEntry.allPodsRevealed() };
+  },
 };
 
 function replacePlayer(players: Player[], updatedPlayer: Player): Player[] {

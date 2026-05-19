@@ -3,7 +3,7 @@ import DieIcon from "../../assets/die.svg?react";
 import { usePlayersStore, useGameStore } from "../../store";
 
 export default function TurnSection() {
-  const { revealPods, currentPlayerIndex } = useGameStore();
+  const { currentPlayerIndex } = useGameStore();
   const { players, rollDieForPlayer, finishPlayerTurn } = usePlayersStore();
 
   return (
@@ -46,13 +46,6 @@ export default function TurnSection() {
         }
       >
         Finish turn
-      </button>
-
-      <button
-        className="text-xl bg-gray-50 font-semibold border-border px-8 py-4 rounded cursor-pointer w-full"
-        onClick={revealPods}
-      >
-        Reveal all pods
       </button>
     </section>
   );
