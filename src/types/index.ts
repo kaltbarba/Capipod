@@ -90,6 +90,7 @@ export type Player = {
   coordinate: Coordinate;
   die: number;
   stepsRemaining: number;
+  color: `#${string}`;
 };
 
 export type EffectContext = {

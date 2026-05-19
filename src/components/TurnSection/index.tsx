@@ -3,7 +3,7 @@ import DieIcon from "../../assets/die.svg?react";
 import { usePlayersStore, useGameStore } from "../../store";
 
 export default function TurnSection() {
-  const { currentPlayerIndex } = useGameStore();
+  const { currentPlayerIndex, winner } = useGameStore();
   const { players, rollDieForPlayer, finishPlayerTurn } = usePlayersStore();
 
   return (
@@ -24,6 +24,7 @@ export default function TurnSection() {
             : "cursor-pointer ",
         ].join(" ")}
         disabled={
+          !!winner ||
           !!(
             players[currentPlayerIndex]?.die ||
             players[currentPlayerIndex]?.stepsRemaining
@@ -52,6 +53,7 @@ export default function TurnSection() {
         ].join(" ")}
         onClick={() => finishPlayerTurn(players[currentPlayerIndex])}
         disabled={
+          !!winner ||
           !players[currentPlayerIndex]?.die ||
           !!players[currentPlayerIndex]?.stepsRemaining
         }

@@ -222,17 +222,19 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
       boardState.shelterCoordinate.x === nextCoordinate.x &&
       boardState.shelterCoordinate.y === nextCoordinate.y
     ) {
-      gameState.finish();
+      gameState.finish({ winner: player });
       logState.addLog(
         logEntry.playerReachedShelter({ playerName: player.name }),
       );
       return;
     }
   },
+
   selectedItem: null,
   setSelectedItem: (selectedItem) => {
     set({ selectedItem });
   },
+
   finishPlayerTurn(player) {
     boardStore.getState().tickPods();
     gameStore.getState().setStage(TurnStage.start);

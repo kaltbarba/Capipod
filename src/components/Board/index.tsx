@@ -12,7 +12,7 @@ import {
 
 import { useBoardStore, useGameStore, usePlayersStore } from "../../store";
 
-import PlayerIcon from "../../assets/player.svg?react";
+import PortraitIcon from "../../assets/portrait.svg?react";
 import ShelterIcon from "../../assets/shelter.svg?react";
 import PotionIcon from "../../assets/potion.svg?react";
 import RockIcon from "../../assets/rock.svg?react";
@@ -115,6 +115,7 @@ export default function Board({
           return (
             <div
               key={`${x},${y}`}
+              style={{ backgroundColor: player?.color }}
               className={[
                 "overflow-hidden flex justify-center items-center board-cell",
                 building ? "building" : "",
@@ -128,7 +129,7 @@ export default function Board({
                 onClickCell({ item: selectedItem, coordinate: { x, y } })
               }
             >
-              {player && <PlayerIcon className="text-red-500 w-full h-full" />}
+              {player && <PortraitIcon className="w-full h-full" />}
 
               {pod?.state === PodState.active && (
                 <span>{pod.activeTurnsRemaining}</span>
@@ -136,16 +137,16 @@ export default function Board({
 
               {item ? (
                 item.category === ItemCategory.potion ? (
-                  <PotionIcon width={24} height={24} />
+                  <PotionIcon className="w-full h-full" />
                 ) : item.category === ItemCategory.rock ? (
-                  <RockIcon width={24} height={24} />
+                  <RockIcon className="w-full h-full" />
                 ) : item.category === ItemCategory.holo ? (
-                  <HoloIcon width={24} height={24} />
+                  <HoloIcon className="w-full h-full" />
                 ) : null
               ) : null}
 
               {x === shelterCoordinate.x && y === shelterCoordinate.y && (
-                <ShelterIcon width={40} height={40} />
+                <ShelterIcon className="w-full h-full" />
               )}
             </div>
           );
