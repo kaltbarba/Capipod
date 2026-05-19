@@ -14,9 +14,9 @@ import { useBoardStore, useGameStore, usePlayersStore } from "../../store";
 
 import PortraitIcon from "../../assets/portrait.svg?react";
 import ShelterIcon from "../../assets/shelter.svg?react";
-import PotionIcon from "../../assets/potion.svg?react";
-import RockIcon from "../../assets/rock.svg?react";
-import HoloIcon from "../../assets/holo.svg?react";
+import DamageIcon from "../../assets/damage.svg?react";
+import DurationIcon from "../../assets/duration.svg?react";
+import ItemIcon from "../../assets/item.svg?react";
 
 import "./index.scss";
 
@@ -117,8 +117,11 @@ export default function Board({
               key={`${x},${y}`}
               style={{ backgroundColor: player?.color }}
               className={[
-                "overflow-hidden flex justify-center items-center board-cell",
+                "min-w-0 min-h-0 flex justify-center items-center board-cell relative",
                 building ? "building" : "",
+                (pod && pod.state !== PodState.idle) || podsRevealed
+                  ? "group"
+                  : "",
                 podClass,
                 selectedItem?.category === ItemCategory.rock &&
                 isSelectedItemThrowableAt.has(getCoordinateKey({ x, y }))
@@ -131,23 +134,33 @@ export default function Board({
             >
               {player && <PortraitIcon className="w-full h-full" />}
 
-              {pod?.state === PodState.active && (
-                <span>{pod.activeTurnsRemaining}</span>
-              )}
+              {pod?.state === PodState.active &&
+                pod.activeTurnsRemaining > 0 && (
+                  <DurationIcon className="w-full h-full" />
+                )}
 
-              {item ? (
-                item.category === ItemCategory.potion ? (
-                  <PotionIcon className="w-full h-full" />
-                ) : item.category === ItemCategory.rock ? (
-                  <RockIcon className="w-full h-full" />
-                ) : item.category === ItemCategory.holo ? (
-                  <HoloIcon className="w-full h-full" />
-                ) : null
-              ) : null}
+              {item ? <ItemIcon className="w-full h-full" /> : null}
 
               {x === shelterCoordinate.x && y === shelterCoordinate.y && (
                 <ShelterIcon className="w-full h-full" />
               )}
+
+              {/* [BUG]: pulse animation affecting tooltip */}
+              {pod ? (
+                <div
+                  className="animate-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1
+                hidden group-hover:block bg-surface-element border border-border rounded z-10 whitespace-nowrap"
+                >
+                  <div className="flex items-center gap-1 p-2 text-sm text-content">
+                    <DamageIcon className="w-6 h-6" />
+                    <span>{pod.damage}</span>
+                    <DurationIcon className="w-6 h-6 ml-2" />
+                    <span>
+                      {pod.activeTurnsRemaining}/{pod.duration}
+                    </span>
+                  </div>
+                </div>
+              ) : null}
             </div>
           );
         }),

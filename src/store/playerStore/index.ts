@@ -85,7 +85,7 @@ const effectHandler: EffectHandler = {
   },
   [EffectType.revealPods]: () => {
     gameStore.getState().revealPods();
-    return { log: logEntry.allPodsRevealed() };
+    return {};
   },
 };
 

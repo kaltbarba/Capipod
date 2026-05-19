@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Skull shape -->
+  <path d="M12 3 Q6 3 5 9 Q4 13 7 15 L7 18 Q7 19 8 19 L16 19 Q17 19 17 18 L17 15 Q20 13 19 9 Q18 3 12 3 Z"
+        fill="#1a0a0a" stroke="#cc2200" stroke-width="0.5"/>
+  <!-- Eye sockets -->
+  <ellipse cx="9.5" cy="11" rx="2" ry="2.2" fill="#cc2200" opacity="0.9"/>
+  <ellipse cx="14.5" cy="11" rx="2" ry="2.2" fill="#cc2200" opacity="0.9"/>
+  <!-- Nose -->
+  <path d="M11.2 14 L12 15.2 L12.8 14 Z" fill="#cc2200" opacity="0.6"/>
+  <!-- Teeth -->
+  <rect x="8.5" y="19" width="2" height="2" rx="0.3" fill="#cc2200" opacity="0.7"/>
+  <rect x="11" y="19" width="2" height="2" rx="0.3" fill="#cc2200" opacity="0.7"/>
+  <rect x="13.5" y="19" width="2" height="2" rx="0.3" fill="#cc2200" opacity="0.7"/>
+</svg>

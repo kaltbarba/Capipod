@@ -8,6 +8,7 @@ import PotionIcon from "../../assets/potion.svg?react";
 import RockIcon from "../../assets/rock.svg?react";
 import HoloIcon from "../../assets/holo.svg?react";
 import PortratIcon from "../../assets/portrait.svg?react";
+import ItemButton from "../ItemButton";
 
 import { usePlayersStore, useGameStore } from "../../store";
 
@@ -65,67 +66,34 @@ export default function PlayerCard({ player }: { player: Player }) {
       </div>
 
       <div className="flex flex-row">
-        <button
-          className={[
-            "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-            isPlayerTurn && !winner ? "cursor-pointer" : "opacity-50",
-          ].join(" ")}
+        <ItemButton
+          quantity={potionItems.length}
+          iconComponent={PotionIcon}
+          disabled={Boolean(winner || !isPlayerTurn)}
           onClick={() =>
             potionItems.length &&
             consumeItem({ item: potionItems[potionItems.length - 1], player })
           }
-          disabled={!isPlayerTurn || !!winner}
-        >
-          {potionItems.length > 0 ? (
-            <>
-              <PotionIcon width="24" height="24" />
-              <div className="absolute top-0 right-2 rounded-full bg-orange-600 text-sm w-4 h-4 inline-flex justify-center items-center">
-                {potionItems.length}
-              </div>
-            </>
-          ) : null}
-        </button>
+        />
 
-        <button
-          className={[
-            "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-            isPlayerTurn && !winner ? "cursor-pointer" : "opacity-50",
-          ].join(" ")}
+        <ItemButton
+          quantity={rockItems.length}
+          iconComponent={RockIcon}
+          disabled={Boolean(winner || !isPlayerTurn)}
           onClick={() =>
             rockItems.length && setSelectedItem(rockItems[rockItems.length - 1])
           }
-          disabled={!isPlayerTurn || !!winner}
-        >
-          {rockItems.length > 0 ? (
-            <>
-              <RockIcon width="24" height="24" />
-              <div className="absolute top-0 right-2 rounded-full bg-orange-600 text-sm w-4 h-4 inline-flex justify-center items-center">
-                {rockItems.length}
-              </div>
-            </>
-          ) : null}
-        </button>
+        />
 
-        <button
-          className={[
-            "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-            isPlayerTurn && !winner ? "cursor-pointer" : "disabled:opacity-50",
-          ].join(" ")}
+        <ItemButton
+          quantity={holoItems.length}
+          iconComponent={HoloIcon}
+          disabled={Boolean(winner || !isPlayerTurn)}
           onClick={() =>
             holoItems.length &&
             consumeItem({ item: holoItems[holoItems.length - 1], player })
           }
-          disabled={!isPlayerTurn || !!winner}
-        >
-          {holoItems.length > 0 ? (
-            <>
-              <HoloIcon width="24" height="24" />
-              <div className="absolute top-0 right-2 rounded-full bg-orange-600 text-sm w-4 h-4 inline-flex justify-center items-center">
-                {holoItems.length}
-              </div>
-            </>
-          ) : null}
-        </button>
+        />
 
         <button className="w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative cursor-pointer"></button>
       </div>
