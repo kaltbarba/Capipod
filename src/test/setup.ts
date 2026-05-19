@@ -10,6 +10,4 @@ beforeEach(() => {
   playerStore.setState(playerStore.getInitialState());
   logStore.setState(logStore.getInitialState());
   gameStore.setState(gameStore.getInitialState());
-
-  console.log(logStore.getInitialState());
 });
