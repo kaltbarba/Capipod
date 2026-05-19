@@ -1,14 +1,12 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ItemButton from ".";
-import { potionItem } from "../../test/fixtures";
 import PotionIcon from "../../assets/potion.svg?react";
 
 describe("<ItemButton />", () => {
   it("renders empty when quantity is 0", () => {
     render(
       <ItemButton
-        item={potionItem}
         quantity={0}
         disabled={false}
         onClick={() => {}}
@@ -21,7 +19,6 @@ describe("<ItemButton />", () => {
   it("renders icon and quantity when quantity is greater than 0", () => {
     render(
       <ItemButton
-        item={potionItem}
         quantity={3}
         disabled={false}
         onClick={() => {}}
@@ -35,7 +32,6 @@ describe("<ItemButton />", () => {
     const onClick = vi.fn();
     render(
       <ItemButton
-        item={potionItem}
         quantity={1}
         disabled={false}
         onClick={onClick}
@@ -50,7 +46,6 @@ describe("<ItemButton />", () => {
     const onClick = vi.fn();
     render(
       <ItemButton
-        item={potionItem}
         quantity={1}
         disabled={true}
         onClick={onClick}
