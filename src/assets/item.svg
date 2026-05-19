@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Star shape with padding -->
+  <path d="M12 3 L14.2 9.2 L20.5 9.2 L15.5 13.2 L17.5 19.5 L12 15.8 L6.5 19.5 L8.5 13.2 L3.5 9.2 L9.8 9.2 Z"
+        fill="#f59e0b" stroke-linejoin="round"/>
+  <!-- Question mark smaller -->
+  <path d="M11 11.2 Q11 10 12 10 Q13 10 13 11.2 Q13 12.2 12 12.8 L12 13.6"
+        stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
+  <circle cx="12" cy="14.8" r="0.6" fill="white"/>
+</svg>

@@ -29,7 +29,7 @@ function App() {
         coordinate: { x: 0, y: 0 },
         die: 0,
         stepsRemaining: 0,
-        color: "#F44336",
+        color: "#00BCD4",
       },
       {
         id: "player-2",

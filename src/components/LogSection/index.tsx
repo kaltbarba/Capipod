@@ -11,7 +11,7 @@ export default function LogSection() {
 
   return (
     <section className="flex-1 min-h-0 flex flex-col border-2 border-border bg-surface p-8">
-      <h2 className="text-content font-bold mb-4">Game Log</h2>
+      <h2 className="text-content font-bold mb-4 text-lg">Game Log</h2>
       <div
         ref={logRef}
         className="border rounded border-border min-h-0 grid px-2 overflow-y-auto"

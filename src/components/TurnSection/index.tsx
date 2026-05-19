@@ -8,12 +8,12 @@ export default function TurnSection() {
 
   return (
     <section className="border-2 border-border bg-surface flex flex-col justify-center items-center p-8">
-      <p className="text-content font-medium text-xl text-left w-full mb-4">
+      <h2 className="text-content font-medium text-lg text-left w-full mb-4">
         {players[currentPlayerIndex]?.name}'s turn -{" "}
         {players[currentPlayerIndex]?.die
           ? `${players[currentPlayerIndex]?.stepsRemaining} steps remainig`
           : "CLICK ON DIE!"}
-      </p>
+      </h2>
 
       <button
         className={[
