@@ -17,6 +17,7 @@ import "./App.scss";
 function App() {
   const { setBuildings, setPods, size, setItems } = useBoardStore();
   const { setPlayers } = usePlayersStore();
+  const { winner } = useGameStore.getState();
 
   useEffect(() => {
     setPlayers([
@@ -28,6 +29,7 @@ function App() {
         coordinate: { x: 0, y: 0 },
         die: 0,
         stepsRemaining: 0,
+        color: "#F44336",
       },
       {
         id: "player-2",
@@ -37,6 +39,7 @@ function App() {
         coordinate: { x: 25, y: 0 },
         die: 0,
         stepsRemaining: 0,
+        color: "#8BC34A",
       },
     ]);
 
@@ -82,7 +85,20 @@ function App() {
       <Header />
 
       <div className="h-full grid grid-cols-[3fr_1fr] overflow-hidden">
-        <Board size={size} className={"overflow-hidden"} />
+        <div className="h-full overflow-hidden relative">
+          <Board
+            size={size}
+            className={[
+              "h-full overflow-hidden",
+              winner ? "opacity-50" : "",
+            ].join(" ")}
+          />
+          {winner ? (
+            <div className="whitespace-nowrap text-3xl text-amber-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-surface-element p-20 border-border rounded ring-2 ring-gray-500">
+              {winner.name} reached the shelter and won the game
+            </div>
+          ) : null}
+        </div>
 
         <div className="h-full flex flex-col overflow-hidden">
           <TurnSection />

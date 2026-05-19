@@ -13,7 +13,7 @@ import { usePlayersStore, useGameStore } from "../../store";
 
 export default function PlayerCard({ player }: { player: Player }) {
   const { consumeItem, setSelectedItem, players } = usePlayersStore();
-  const { currentPlayerIndex } = useGameStore();
+  const { currentPlayerIndex, winner } = useGameStore();
 
   const potionItems = useMemo(
     () =>
@@ -42,14 +42,15 @@ export default function PlayerCard({ player }: { player: Player }) {
     <div
       key={player.name}
       className={[
-        "h-fit flex flex-col   bg-surface-element rounded py-2 px-4",
-        isPlayerTurn
-          ? "ring-2 ring-gray-500 shadow-lg shadow-gray-500"
-          : "border-border border-2",
+        "h-fit flex flex-col bg-surface-element rounded py-2 px-4",
+        isPlayerTurn ? "ring-3 ring-gray-500" : "border-border border-2",
       ].join(" ")}
     >
       <div className="flex flex-row items-center mb-2">
-        <div className="flex items-center justify-center border border-border rounded w-10 h-10  mr-2">
+        <div
+          className="flex items-center justify-center border border-border rounded w-10 h-10 mr-2"
+          style={{ backgroundColor: player.color }}
+        >
           <PortratIcon width="24" height="24" className="inline" />
         </div>
 
@@ -67,13 +68,13 @@ export default function PlayerCard({ player }: { player: Player }) {
         <button
           className={[
             "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-            isPlayerTurn ? "cursor-pointer" : "disabled:opacity-50",
+            isPlayerTurn && !winner ? "cursor-pointer" : "opacity-50",
           ].join(" ")}
           onClick={() =>
             potionItems.length &&
             consumeItem({ item: potionItems[potionItems.length - 1], player })
           }
-          disabled={!isPlayerTurn}
+          disabled={!isPlayerTurn || !!winner}
         >
           {potionItems.length > 0 ? (
             <>
@@ -88,12 +89,12 @@ export default function PlayerCard({ player }: { player: Player }) {
         <button
           className={[
             "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-            isPlayerTurn ? "cursor-pointer" : "disabled:opacity-50",
+            isPlayerTurn && !winner ? "cursor-pointer" : "opacity-50",
           ].join(" ")}
           onClick={() =>
             rockItems.length && setSelectedItem(rockItems[rockItems.length - 1])
           }
-          disabled={!isPlayerTurn}
+          disabled={!isPlayerTurn || !!winner}
         >
           {rockItems.length > 0 ? (
             <>
@@ -108,13 +109,13 @@ export default function PlayerCard({ player }: { player: Player }) {
         <button
           className={[
             "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-            isPlayerTurn ? "cursor-pointer" : "disabled:opacity-50",
+            isPlayerTurn && !winner ? "cursor-pointer" : "disabled:opacity-50",
           ].join(" ")}
           onClick={() =>
             holoItems.length &&
             consumeItem({ item: holoItems[holoItems.length - 1], player })
           }
-          disabled={!isPlayerTurn}
+          disabled={!isPlayerTurn || !!winner}
         >
           {holoItems.length > 0 ? (
             <>

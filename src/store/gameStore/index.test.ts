@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import gameStore from ".";
 import { TurnStage } from "../../types";
+import { player } from "../../test/fixtures";
 
 describe("gameStore", () => {
   it("finish sets stage to end", () => {
@@ -9,7 +10,7 @@ describe("gameStore", () => {
     gameStore.getState().setStage(TurnStage.moving);
     expect(gameStore.getState().stage).toBe(TurnStage.moving);
 
-    gameStore.getState().finish();
+    gameStore.getState().finish({ winner: player });
     expect(gameStore.getState().stage).toBe(TurnStage.end);
   });
 
