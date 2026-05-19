@@ -1,15 +1,12 @@
 
 
 .board-container {
-  display: grid;
-  height: 100%;
-  grid-template-columns: repeat(var(--grid-size), 1fr);
-  grid-template-rows: repeat(var(--grid-size), 1fr);
 
 
   .board-cell {
     background-color: #1a1a2e;
     border: 1px solid #2a2a3e;
+
    
     &.idle {
       background-color: orange;
