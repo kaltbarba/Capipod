@@ -39,6 +39,7 @@ export const player: Player = {
   coordinate: { x: 0, y: 0 },
   die: 0,
   stepsRemaining: 0,
+  color: "#F44336",
 };
 
 export const potionItem: GameItem = {
