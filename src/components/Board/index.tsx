@@ -14,9 +14,6 @@ import { useBoardStore, useGameStore, usePlayersStore } from "../../store";
 
 import PortraitIcon from "../../assets/portrait.svg?react";
 import ShelterIcon from "../../assets/shelter.svg?react";
-import PotionIcon from "../../assets/potion.svg?react";
-import RockIcon from "../../assets/rock.svg?react";
-import HoloIcon from "../../assets/holo.svg?react";
 import DamageIcon from "../../assets/damage.svg?react";
 import DurationIcon from "../../assets/duration.svg?react";
 import ItemIcon from "../../assets/item.svg?react";
@@ -90,7 +87,7 @@ export default function Board({
       });
       setSelectedItem(null);
     },
-    [consumeItem, currentPlayerIndex, players, setSelectedItem, selectedItem],
+    [consumeItem, currentPlayerIndex, players, setSelectedItem],
   );
 
   return (
