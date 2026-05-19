@@ -8,10 +8,16 @@ export default function TurnSection() {
 
   return (
     <section className="border-2 border-border bg-surface flex flex-col justify-center items-center p-8">
-      <DieIcon className="w-30 mb-8" />
+      <p className="text-content font-medium text-xl text-left w-full mb-4">
+        {players[currentPlayerIndex]?.name}'s turn -{" "}
+        {players[currentPlayerIndex]?.die
+          ? `${players[currentPlayerIndex]?.stepsRemaining} steps remainig`
+          : "CLICK ON DIE!"}
+      </p>
+
       <button
         className={[
-          "text-xl bg-button-primary font-semibold border-border px-8 py-4 rounded w-full mb-4",
+          "text-xl rounded mb-4",
           players[currentPlayerIndex]?.die ||
           players[currentPlayerIndex]?.stepsRemaining
             ? "disabled:opacity-50 disabled:cursor-not-allowed"
@@ -28,7 +34,12 @@ export default function TurnSection() {
           rollDieForPlayer(players[currentPlayerIndex])
         }
       >
-        Roll die
+        <DieIcon
+          className={[
+            "w-30",
+            players[currentPlayerIndex]?.die ? "opacity-50" : "",
+          ].join(" ")}
+        />
       </button>
 
       <button

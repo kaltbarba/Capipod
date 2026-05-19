@@ -44,7 +44,7 @@ export default function PlayerCard({ player }: { player: Player }) {
       className={[
         "h-fit flex flex-col   bg-surface-element rounded py-2 px-4",
         isPlayerTurn
-          ? "ring-2 ring-gray-500 shadow-lg shadow-gray-500 "
+          ? "ring-2 ring-gray-500 shadow-lg shadow-gray-500"
           : "border-border border-2",
       ].join(" ")}
     >

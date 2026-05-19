@@ -92,8 +92,11 @@ export default function Board({
 
   return (
     <div
-      className={`board-container ${className}`}
-      style={{ "--grid-size": size } as React.CSSProperties}
+      className={`grid board-container ${className}`}
+      style={{
+        gridTemplateColumns: `repeat(${size}, 1fr)`,
+        gridTemplateRows: `repeat(${size}, 1fr)`,
+      }}
     >
       {Array.from({ length: size }, (_, y) =>
         Array.from({ length: size }, (_, x) => {
@@ -113,7 +116,7 @@ export default function Board({
             <div
               key={`${x},${y}`}
               className={[
-                "board-cell",
+                "overflow-hidden flex justify-center items-center board-cell",
                 building ? "building" : "",
                 podClass,
                 selectedItem?.category === ItemCategory.rock &&
@@ -125,9 +128,7 @@ export default function Board({
                 onClickCell({ item: selectedItem, coordinate: { x, y } })
               }
             >
-              {player && (
-                <PlayerIcon width={40} height={40} style={{ color: "red" }} />
-              )}
+              {player && <PlayerIcon className="text-red-500 w-full h-full" />}
 
               {pod?.state === PodState.active && (
                 <span>{pod.activeTurnsRemaining}</span>

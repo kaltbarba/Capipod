@@ -78,13 +78,13 @@ function App() {
   }, []);
 
   return (
-    <div className="h-screen w-screen grid grid-cols-[1fr]  bg-background">
+    <div className="h-screen w-screen grid grid-rows-[auto_1fr] grid-cols-[1fr] bg-background ">
       <Header />
 
-      <div className="grid grid-cols-[3fr_1fr] mt-2">
-        <Board size={size} className={"overflow-auto"} />
+      <div className="h-full grid grid-cols-[3fr_1fr] overflow-hidden">
+        <Board size={size} className={"overflow-hidden"} />
 
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col overflow-hidden">
           <TurnSection />
           <LogSection />
         </div>
