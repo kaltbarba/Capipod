@@ -20,7 +20,7 @@ export default function TurnSection() {
           "text-xl rounded mb-4",
           players[currentPlayerIndex]?.die ||
           players[currentPlayerIndex]?.stepsRemaining
-            ? "disabled:opacity-50 disabled:cursor-not-allowed"
+            ? "disabled:opacity-30 disabled:cursor-not-allowed"
             : "cursor-pointer ",
         ].join(" ")}
         disabled={
@@ -38,7 +38,7 @@ export default function TurnSection() {
         <DieIcon
           className={[
             "w-30",
-            players[currentPlayerIndex]?.die ? "opacity-50" : "",
+            players[currentPlayerIndex]?.die ? "opacity-70" : "",
           ].join(" ")}
         />
       </button>
@@ -48,7 +48,7 @@ export default function TurnSection() {
           "text-xl bg-button-danger font-semibold border-border px-8 py-4 rounded cursor-pointer w-full",
           !players[currentPlayerIndex]?.die ||
           !!players[currentPlayerIndex]?.stepsRemaining
-            ? "disabled:opacity-50 disabled:cursor-not-allowed"
+            ? "disabled:opacity-30 disabled:cursor-not-allowed"
             : "cursor-pointer ",
         ].join(" ")}
         onClick={() => finishPlayerTurn(players[currentPlayerIndex])}

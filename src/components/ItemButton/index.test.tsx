@@ -53,7 +53,7 @@ describe("<ItemButton />", () => {
       />,
     );
     const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("disabled");
+    expect(button).toBeDisabled();
     fireEvent.click(button);
     expect(onClick).not.toHaveBeenCalled();
   });

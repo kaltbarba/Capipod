@@ -3,6 +3,8 @@ import Board from "./components/Board";
 import Header from "./components/Header";
 import LogSection from "./components/LogSection";
 import TurnSection from "./components/TurnSection";
+import LobbyScreen from "./components/LobbyScreen";
+import type { PlayerConfig } from "./types";
 
 import PodsData from "./data/pods";
 import BuildingsData from "./data/buildings";
@@ -17,36 +19,36 @@ import "./App.scss";
 function App() {
   const { setBuildings, setPods, size, setItems } = useBoardStore();
   const { setPlayers } = usePlayersStore();
-  const { winner } = useGameStore.getState();
+  const { winner, gameStarted, startGame } = useGameStore();
 
   useEffect(() => {
-    setPlayers([
-      {
-        id: "player-1",
-        name: "Kenny",
-        healthPoints: 5,
-        inventory: [],
-        coordinate: { x: 0, y: 0 },
-        die: 0,
-        stepsRemaining: 0,
-        color: "#00BCD4",
-      },
-      {
-        id: "player-2",
-        name: "Andres",
-        healthPoints: 5,
-        inventory: [],
-        coordinate: { x: 25, y: 0 },
-        die: 0,
-        stepsRemaining: 0,
-        color: "#8BC34A",
-      },
-    ]);
-
     setBuildings(BuildingsData);
     setPods(PodsData);
     setItems(ItemsData);
-  }, [setPlayers, setBuildings, setPods, setItems]);
+  }, [setBuildings, setPods, setItems]);
+
+  function onGameStart(configs: PlayerConfig[]) {
+    const totalPlayers = configs.length;
+    setPlayers(
+      configs.map((config, i) => ({
+        id: `player-${i + 1}`,
+        name: config.name,
+        color: config.color,
+        healthPoints: 10,
+        inventory: [],
+        die: 0,
+        stepsRemaining: 0,
+        coordinate: {
+          x:
+            totalPlayers === 1
+              ? 0
+              : Math.round((i * (size - 1)) / (totalPlayers - 1)),
+          y: 0,
+        },
+      })),
+    );
+    startGame();
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -58,19 +60,21 @@ function App() {
       switch (e.key) {
         case "ArrowUp":
           movePlayer(currentPlayer, Direction.up);
+          e.preventDefault();
           break;
         case "ArrowDown":
           movePlayer(currentPlayer, Direction.down);
+          e.preventDefault();
           break;
         case "ArrowLeft":
           movePlayer(currentPlayer, Direction.left);
+          e.preventDefault();
           break;
         case "ArrowRight":
           movePlayer(currentPlayer, Direction.right);
+          e.preventDefault();
           break;
       }
-
-      e.preventDefault();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -80,8 +84,12 @@ function App() {
     };
   }, []);
 
+  if (!gameStarted) {
+    return <LobbyScreen onStart={onGameStart} />;
+  }
+
   return (
-    <div className="h-screen w-screen grid grid-rows-[auto_1fr] grid-cols-[1fr] bg-background ">
+    <div className="h-screen w-screen grid grid-rows-[auto_1fr] grid-cols-[1fr] bg-background">
       <Header />
 
       <div className="h-full grid grid-cols-[3fr_1fr] overflow-hidden">
@@ -90,7 +98,7 @@ function App() {
             size={size}
             className={[
               "h-full overflow-hidden",
-              winner ? "opacity-50" : "",
+              winner ? "opacity-30" : "",
             ].join(" ")}
           />
           {winner ? (

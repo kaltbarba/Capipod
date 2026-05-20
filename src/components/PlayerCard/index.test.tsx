@@ -49,8 +49,8 @@ describe("<PlayerCard />", () => {
     render(<PlayerCard player={playerWithItems} />);
 
     const buttons = screen.getAllByRole("button");
-    expect(buttons[0]).toHaveAttribute("disabled");
-    expect(buttons[1]).toHaveAttribute("disabled");
+    expect(buttons[0]).toBeDisabled();
+    expect(buttons[1]).toBeDisabled();
   });
 
   it("consuming potion removes it from inventory", () => {
