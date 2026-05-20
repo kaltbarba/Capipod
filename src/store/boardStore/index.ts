@@ -17,6 +17,7 @@ interface BoardState {
   setBuildings: (buildings: Building[]) => void;
 
   shelterCoordinate: Coordinate;
+  setShelterCoordinate: ({ coordinate }: { coordinate: Coordinate }) => void;
 
   itemsMap: Map<CoordinateKey, GameItem>;
   setItems: (items: GameItem[]) => void;
@@ -49,6 +50,9 @@ const useBoardStore = create<BoardState>((set) => ({
   },
 
   shelterCoordinate: { x: 8, y: 0 },
+  setShelterCoordinate: ({ coordinate }) => {
+    set({ shelterCoordinate: coordinate });
+  },
 
   itemsMap: new Map(),
   setItems: (items) => {
