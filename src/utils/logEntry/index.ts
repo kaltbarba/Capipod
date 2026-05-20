@@ -76,6 +76,14 @@ export function playerHealed({
   return createLogEntry(`${playerName} healed for ${amount} HP`);
 }
 
+export function playerEliminated({
+  playerName,
+}: {
+  playerName: string;
+}): LogEntry {
+  return createLogEntry(`${playerName} was eliminated`);
+}
+
 export function playerUsedItem({
   playerName,
   itemName,

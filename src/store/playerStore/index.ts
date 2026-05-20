@@ -244,7 +244,13 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
       players: replacePlayer(state.players, updatedPlayer),
     }));
 
-    gameStore.getState().nextPlayer(get().players.length);
+    const players = get().players;
+    const total = players.length;
+    let nextIndex = (gameStore.getState().currentPlayerIndex + 1) % total;
+    while (players[nextIndex].healthPoints <= 0) {
+      nextIndex = (nextIndex + 1) % total;
+    }
+    gameStore.setState({ currentPlayerIndex: nextIndex });
   },
 }));
 
