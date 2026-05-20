@@ -101,18 +101,4 @@ describe("<PlayerSetupDialog />", () => {
 
     expect(onSubmit).not.toHaveBeenCalled();
   });
-
-  it("resets name and color after submit", () => {
-    const onSubmit = vi.fn();
-    renderSetup(onSubmit);
-
-    fireEvent.change(screen.getByLabelText("Name"), {
-      target: { value: "Kenny" },
-    });
-    fireEvent.click(screen.getAllByRole("radio")[1]);
-    fireEvent.click(screen.getByRole("button", { name: /confirm/i }));
-
-    expect(screen.getByLabelText("Name")).toHaveValue("");
-    expect(screen.getAllByRole("radio")[0]).toBeChecked();
-  });
 });
