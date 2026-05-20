@@ -15,8 +15,8 @@ export default function ItemButton({
   return (
     <button
       className={[
-        "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative ",
-        disabled ? "opacity-50 " : "cursor-pointer",
+        "w-14 h-8 border border-border bg-secondary-800 mr-2 flex justify-center items-center relative disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer",
+        disabled ? "opacity-30 " : "cursor-pointer",
       ].join(" ")}
       onClick={onClick}
       disabled={disabled}

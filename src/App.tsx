@@ -98,7 +98,7 @@ function App() {
             size={size}
             className={[
               "h-full overflow-hidden",
-              winner ? "opacity-50" : "",
+              winner ? "opacity-30" : "",
             ].join(" ")}
           />
           {winner ? (

@@ -38,7 +38,7 @@ export default function TurnSection() {
         <DieIcon
           className={[
             "w-30",
-            players[currentPlayerIndex]?.die ? "opacity-50" : "",
+            players[currentPlayerIndex]?.die ? "opacity-70" : "",
           ].join(" ")}
         />
       </button>
