@@ -45,6 +45,7 @@ export default function PlayerCard({ player }: { player: Player }) {
       className={[
         "h-fit flex flex-col bg-surface-element rounded py-2 px-4",
         isPlayerTurn ? "ring-3 ring-gray-500" : "border-border border-2",
+        player.healthPoints <= 0 ? "opacity-50 grayscale" : "",
       ].join(" ")}
     >
       <div className="flex flex-row items-center mb-2">

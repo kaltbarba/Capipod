@@ -115,7 +115,7 @@ export default function Board({
           return (
             <div
               key={`${x},${y}`}
-              style={{ backgroundColor: player?.color }}
+              style={{ backgroundColor: player && player.healthPoints > 0 ? player.color : undefined }}
               className={[
                 "min-w-0 min-h-0 flex justify-center items-center board-cell relative",
                 building ? "building" : "",
