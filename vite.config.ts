@@ -17,13 +17,13 @@ export default defineConfig(({ mode }) => ({
     globals: true,
     setupFiles: "./src/test/setup.ts",
     coverage: {
-include: ["src/**/*.{ts,tsx}"],
+      include: ["src/**/*.{ts,tsx}"],
       exclude: ["src/test/**", "src/data/**", "src/main.tsx"],
       thresholds: {
-        lines: 10,
-        functions: 10,
-        branches: 10,
-        statements: 10,
+        lines: 90,
+        functions: 90,
+        branches: 90,
+        statements: 90,
       },
     },
   },

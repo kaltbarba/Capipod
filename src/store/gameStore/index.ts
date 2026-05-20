@@ -34,6 +34,7 @@ const useGameStore = create<GameState>((set) => ({
     boardStore.getState().disableAllPods();
   },
   podsRevealed: false,
+  winner: undefined,
   revealPods() {
     logStore.getState().addLog(logEntry.allPodsRevealed());
     set({ podsRevealed: true });
