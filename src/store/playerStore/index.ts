@@ -192,6 +192,10 @@ const usePlayersStore = create<PlayerState>((set, get) => ({
           podName: podAtCoordinate.name,
         }),
       );
+
+      if (updatedPlayer.healthPoints <= 0) {
+        logState.addLog(logEntry.playerEliminated({ playerName: player.name }));
+      }
     }
 
     const itemAtCoordinate = boardState.itemsMap.get(nextCoordinateKey);
