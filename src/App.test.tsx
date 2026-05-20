@@ -6,11 +6,11 @@ import { player } from "./test/fixtures";
 import { TurnStage } from "./types";
 
 describe("<App />", () => {
-  it("initializes with two players on mount", () => {
+  it("renders lobby on initial load", () => {
     render(<App />);
 
-    expect(screen.getByText("Kenny")).toBeInTheDocument();
-    expect(screen.getByText("Andres")).toBeInTheDocument();
+    expect(screen.getByText("Start Game")).toBeInTheDocument();
+    expect(screen.getByText("+ Add Player")).toBeInTheDocument();
   });
 
   it("initializes board data on mount", () => {
@@ -22,13 +22,10 @@ describe("<App />", () => {
   });
 
   it("moves current player down on ArrowDown", () => {
-    render(<App />);
+    useGameStore.setState({ gameStarted: true, stage: TurnStage.moving });
+    usePlayersStore.getState().setPlayers([{ ...player, stepsRemaining: 3 }]);
 
-    const storePlayer = usePlayersStore.getState().players[0];
-    usePlayersStore
-      .getState()
-      .setPlayers([{ ...storePlayer, stepsRemaining: 3 }]);
-    useGameStore.setState({ stage: TurnStage.moving });
+    render(<App />);
 
     fireEvent.keyDown(window, { key: "ArrowDown" });
 
@@ -36,13 +33,10 @@ describe("<App />", () => {
   });
 
   it("moves current player right on ArrowRight", () => {
-    render(<App />);
+    useGameStore.setState({ gameStarted: true, stage: TurnStage.moving });
+    usePlayersStore.getState().setPlayers([{ ...player, stepsRemaining: 3 }]);
 
-    const storePlayer = usePlayersStore.getState().players[0];
-    usePlayersStore
-      .getState()
-      .setPlayers([{ ...storePlayer, stepsRemaining: 3 }]);
-    useGameStore.setState({ stage: TurnStage.moving });
+    render(<App />);
 
     fireEvent.keyDown(window, { key: "ArrowRight" });
 
@@ -50,15 +44,12 @@ describe("<App />", () => {
   });
 
   it("moves current player up on ArrowUp", () => {
-    render(<App />);
-
-    const storePlayer = usePlayersStore.getState().players[0];
+    useGameStore.setState({ gameStarted: true, stage: TurnStage.moving });
     usePlayersStore
       .getState()
-      .setPlayers([
-        { ...storePlayer, coordinate: { x: 0, y: 1 }, stepsRemaining: 3 },
-      ]);
-    useGameStore.setState({ stage: TurnStage.moving });
+      .setPlayers([{ ...player, coordinate: { x: 0, y: 1 }, stepsRemaining: 3 }]);
+
+    render(<App />);
 
     fireEvent.keyDown(window, { key: "ArrowUp" });
 
@@ -66,15 +57,12 @@ describe("<App />", () => {
   });
 
   it("moves current player left on ArrowLeft", () => {
-    render(<App />);
-
-    const storePlayer = usePlayersStore.getState().players[0];
+    useGameStore.setState({ gameStarted: true, stage: TurnStage.moving });
     usePlayersStore
       .getState()
-      .setPlayers([
-        { ...storePlayer, coordinate: { x: 1, y: 0 }, stepsRemaining: 3 },
-      ]);
-    useGameStore.setState({ stage: TurnStage.moving });
+      .setPlayers([{ ...player, coordinate: { x: 1, y: 0 }, stepsRemaining: 3 }]);
+
+    render(<App />);
 
     fireEvent.keyDown(window, { key: "ArrowLeft" });
 
@@ -82,7 +70,7 @@ describe("<App />", () => {
   });
 
   it("shows winner overlay when there is a winner", () => {
-    useGameStore.setState({ winner: player });
+    useGameStore.setState({ gameStarted: true, winner: player });
 
     render(<App />);
 
@@ -92,6 +80,8 @@ describe("<App />", () => {
   });
 
   it("does not show winner overlay without a winner", () => {
+    useGameStore.setState({ gameStarted: true });
+
     render(<App />);
 
     expect(

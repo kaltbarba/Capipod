@@ -8,6 +8,8 @@ import logStore from "../logStore";
 import { TurnStage, type Player } from "../../types";
 
 interface GameState {
+  gameStarted: boolean;
+  startGame: () => void;
   currentPlayerIndex: number;
   nextPlayer: (index: number) => void; // [REFACTOR]: TO BE MOVED(?)
   stage: TurnStage;
@@ -19,6 +21,8 @@ interface GameState {
 }
 
 const useGameStore = create<GameState>((set) => ({
+  gameStarted: false,
+  startGame: () => set({ gameStarted: true }),
   currentPlayerIndex: 0,
   stage: TurnStage.start,
   setStage: (stage) => set({ stage }),
@@ -27,9 +31,7 @@ const useGameStore = create<GameState>((set) => ({
       currentPlayerIndex: (state.currentPlayerIndex + 1) % totalPlayers,
     })),
   finish: ({ winner }) => {
-    set({
-      stage: TurnStage.end,
-    });
+    set({ stage: TurnStage.end });
     set({ podsRevealed: true, winner });
     boardStore.getState().disableAllPods();
   },

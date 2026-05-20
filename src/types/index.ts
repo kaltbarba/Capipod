@@ -82,6 +82,11 @@ export type Pod = {
   activeTurnsRemaining: number;
 };
 
+export type PlayerConfig = {
+  name: string;
+  color: `#${string}`;
+};
+
 export type Player = {
   id: string;
   name: string;

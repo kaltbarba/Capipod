@@ -16,8 +16,8 @@ describe("<TurnSection />", () => {
   it("Shows number of steps remaining and disabled finish turn and roll die after rolling", () => {
     usePlayersStore.getState().setPlayers([player]);
     render(<TurnSection />);
-    expect(screen.getAllByRole("button")[0]).not.toHaveAttribute("disabled");
-    expect(screen.getByText("Finish turn")).toHaveAttribute("disabled");
+    expect(screen.getAllByRole("button")[0]).not.toBeDisabled();
+    expect(screen.getByText("Finish turn")).toBeDisabled();
 
     fireEvent.click(screen.getAllByRole("button")[0]);
     expect(
@@ -25,8 +25,8 @@ describe("<TurnSection />", () => {
         `${player.name}'s turn - ${usePlayersStore.getState().players[0].stepsRemaining} steps remainig`,
       ),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute("disabled");
-    expect(screen.getByText("Finish turn")).toHaveAttribute("disabled");
+    expect(screen.getAllByRole("button")[0]).toBeDisabled();
+    expect(screen.getByText("Finish turn")).toBeDisabled();
   });
 
   it("Enables finish turn after using all remainig steps", () => {
@@ -35,11 +35,11 @@ describe("<TurnSection />", () => {
       .setPlayers([{ ...player, die: 6, stepsRemaining: 0 }]);
     render(<TurnSection />);
 
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute("disabled");
-    expect(screen.getByText("Finish turn")).not.toHaveAttribute("disabled");
+    expect(screen.getAllByRole("button")[0]).toBeDisabled();
+    expect(screen.getByText("Finish turn")).not.toBeDisabled();
 
     fireEvent.click(screen.getByText("Finish turn"));
-    expect(screen.getAllByRole("button")[0]).not.toHaveAttribute("disabled");
-    expect(screen.getByText("Finish turn")).toHaveAttribute("disabled");
+    expect(screen.getAllByRole("button")[0]).not.toBeDisabled();
+    expect(screen.getByText("Finish turn")).toBeDisabled();
   });
 });
